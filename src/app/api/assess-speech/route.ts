@@ -6,6 +6,8 @@ export async function POST(req: NextRequest) {
     const audioFile = formData.get("audio") as File;
     const sentence = formData.get("sentence") as string;
     const level = formData.get("level") as string;
+    const spokenText = (formData.get("spokenText") as string || "").trim();
+    const recognitionSupported = formData.get("recognitionSupported") === "true";
 
     if (!audioFile || !sentence) {
       return NextResponse.json(
@@ -19,6 +21,7 @@ export async function POST(req: NextRequest) {
     console.log(`- Dung lượng: ${audioFile.size} bytes`);
     console.log(`- Câu đích: "${sentence}"`);
     console.log(`- Cấp độ: ${level}`);
+    console.log(`- Bé thực tế đã đọc: "${spokenText}"`);
 
     // =========================================================================
     // 💡 HƯỚNG DẪN TÍCH HỢP SPEECHSUPER API (CHẤM ĐIỂM PHÁT ÂM CHI TIẾT CỦA TRẺ)
@@ -106,39 +109,65 @@ export async function POST(req: NextRequest) {
          const { tutorComment, tips, roadmap } = aiResponse;
     */
 
-    // 🧪 LOGIC GIẢ LẬP CHẤM ĐIỂM THÔNG MINH (SMART ASSESSMENT SIMULATOR)
-    // Tự động phân tích kích thước file âm thanh (Audio size in bytes) để chấm điểm thực tế!
+    // 🧪 THUẬT TOÁN ĐÁNH GIÁ PHÁT ÂM THỰC TẾ (REAL SPEECH MATCHING & DIFF ENGINE)
     const cleanedSentence = sentence.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?]/g, "").toLowerCase();
-    const words = cleanedSentence.split(/\s+/).filter(Boolean);
+    const targetWords = cleanedSentence.split(/\s+/).filter(Boolean);
     const audioSize = audioFile.size;
 
     let score = 0;
     const mispronouncedWords: string[] = [];
 
-    console.log(`📊 [AI Grading Analyst] Phân tích kích thước file âm thanh: ${audioSize} bytes`);
+    console.log(`📊 [AI Speech Diff Engine] Audio Size: ${audioSize} bytes | Spoken Text: "${spokenText}"`);
 
+    // 1. Kiểm tra im lặng hoặc lỗi Mic trước (Kích thước cực nhỏ < 6000 bytes)
     if (audioSize < 6000) {
-      // 1. Bé chưa nói gì hoặc chỉ bấm nút rồi dừng ngay lập tức (Kích thước cực nhỏ)
-      score = Math.floor(Math.random() * 10) + 10; // 10 - 20 điểm
-      // Đánh dấu tất cả từ đều sai vì bé chưa kịp đọc câu
-      words.forEach(w => mispronouncedWords.push(w));
-    } else if (audioSize < 16000) {
-      // 2. Bé nói quá ngắn, nói ngập ngừng hoặc bị ngắt âm giữa chừng
-      score = Math.floor(Math.random() * 15) + 65; // 65 - 80 điểm
-      // Đánh dấu ngẫu nhiên 2 từ bị sai
-      const count = Math.min(2, words.length);
-      const shuffled = [...words].sort(() => 0.5 - Math.random());
-      for (let i = 0; i < count; i++) {
-        mispronouncedWords.push(shuffled[i]);
-      }
+      score = 0;
+      targetWords.forEach((w) => mispronouncedWords.push(w));
     } else {
-      // 3. Bé nói đầy đủ, rõ ràng và mạch lạc (File ghi âm đạt dung lượng chuẩn)
-      score = Math.floor(Math.random() * 6) + 95; // 95 - 100 điểm
-      // Phát âm hoàn hảo, chỉ có tỷ lệ cực nhỏ (10%) bị nhầm 1 từ phụ âm gió cho sinh động
-      if (Math.random() < 0.10 && words.length > 3) {
-        const randomIdx = Math.floor(Math.random() * words.length);
-        mispronouncedWords.push(words[randomIdx]);
-        score = 92; // Hạ nhẹ điểm xuống 92
+      // 2. Bé thực sự có nói!
+      if (!spokenText) {
+        // Nếu trình duyệt hỗ trợ Speech Recognition, nhưng không thu được từ nào (do bé im lặng hoặc đọc hoàn toàn sai)
+        if (recognitionSupported) {
+          score = 0;
+          targetWords.forEach((w) => mispronouncedWords.push(w));
+        } else {
+          // Trình duyệt của bé không hỗ trợ Speech Recognition (fallback thông minh trong lúc test thử nghiệm)
+          if (audioSize < 16000) {
+            score = 70;
+            mispronouncedWords.push(targetWords[0]);
+            if (targetWords.length > 3) {
+              mispronouncedWords.push(targetWords[2]);
+            }
+          } else {
+            // Để tránh việc chấm điểm full 100 khi không nhận diện được, ta chỉ cho 80 điểm làm khích lệ
+            score = 80;
+            mispronouncedWords.push(targetWords[0]);
+          }
+        }
+      } else {
+        // 3. Thực hiện so khớp từ vựng chi tiết từng chữ (Word Diff Matching)
+        const cleanedSpoken = spokenText.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?]/g, "").toLowerCase();
+        const spokenWords = cleanedSpoken.split(/\s+/).filter(Boolean);
+
+        // Bản sao tạm của danh sách từ bé đã nói để đánh dấu từ đã khớp
+        const tempSpoken = [...spokenWords];
+
+        targetWords.forEach((word) => {
+          const index = tempSpoken.indexOf(word);
+          if (index !== -1) {
+            // Từ đích xuất hiện trong câu nói của bé => Bé đã đọc Đúng!
+            // Xóa khỏi danh sách tạm để tránh khớp trùng lặp
+            tempSpoken.splice(index, 1);
+          } else {
+            // Từ đích không được tìm thấy trong câu nói => Bé đọc Sai / Bỏ sót từ này!
+            mispronouncedWords.push(word);
+          }
+        });
+
+        // Tính tỉ lệ phần trăm từ đọc đúng thực tế
+        const totalCount = targetWords.length;
+        const correctCount = totalCount - mispronouncedWords.length;
+        score = Math.round((correctCount / totalCount) * 100);
       }
     }
 

@@ -14,7 +14,7 @@ export default function TestPage({ params }: TestPageProps) {
   const router = useRouter();
   const resolvedParams = use(params);
   const rawLevel = resolvedParams.level;
-  
+
   // Normalize level name
   const level = (rawLevel.charAt(0).toUpperCase() + rawLevel.slice(1).toLowerCase()) as "Starters" | "Movers" | "Flyers";
 
@@ -62,14 +62,14 @@ export default function TestPage({ params }: TestPageProps) {
       const textToSpeak = currentPrompt.sentence;
       // Using our robust Next.js server proxy route to bypass all CORS and referer blocks
       const ttsUrl = `/api/tts?text=${encodeURIComponent(textToSpeak)}`;
-      
+
       const audio = new Audio(ttsUrl);
       audio.onended = () => setTtsPlaying(false);
       audio.onerror = (e) => {
         console.warn("Lỗi phát Google TTS, chuyển sang Web Speech API:", e);
         playNativeTTS();
       };
-      
+
       audio.play().catch((err) => {
         console.warn("Autoplay bị chặn, chuyển sang Web Speech API:", err);
         playNativeTTS();
@@ -97,7 +97,7 @@ export default function TestPage({ params }: TestPageProps) {
   };
 
   // Handle uploaded speaking voice chunk
-  const handleRecordingComplete = async (audioBlob: Blob) => {
+  const handleRecordingComplete = async (audioBlob: Blob, spokenText: string, recognitionSupported: boolean) => {
     setIsProcessing(true);
     setErrorMsg(null);
 
@@ -107,8 +107,10 @@ export default function TestPage({ params }: TestPageProps) {
       gradingFormData.append("audio", audioBlob, "speaking_voice.webm");
       gradingFormData.append("sentence", currentPrompt.sentence);
       gradingFormData.append("level", level);
+      gradingFormData.append("spokenText", spokenText || "");
+      gradingFormData.append("recognitionSupported", recognitionSupported ? "true" : "false");
 
-      console.log("📤 Đang gửi file âm thanh lên hệ thống đánh giá...");
+      console.log(`📤 Đang gửi file âm thanh kèm transcript "${spokenText}" lên hệ thống đánh giá...`);
       const gradingRes = await fetch("/api/assess-speech", {
         method: "POST",
         body: gradingFormData,
@@ -179,7 +181,7 @@ export default function TestPage({ params }: TestPageProps) {
               </button>
             </Link>
           )}
-          
+
           <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 px-4 py-1.5 rounded-2xl">
             <span className="text-xl">{currentPrompt.animal}</span>
             <span className="text-sm font-black text-slate-700 uppercase tracking-wider">{level} LEVEL</span>
@@ -193,10 +195,10 @@ export default function TestPage({ params }: TestPageProps) {
 
       {/* Main Workspace content */}
       <main className="flex-1 max-w-2xl w-full mx-auto px-4 mt-8 flex flex-col justify-center">
-        
+
         {/* Mascot Prompt card */}
         <section className="bg-white rounded-3xl border-4 border-slate-100 p-6 md:p-8 shadow-xl mb-6 relative overflow-hidden">
-          
+
           {/* Header Title with Mascot */}
           <div className="flex items-center gap-4 mb-6">
             <div className="w-16 h-16 rounded-2xl bg-amber-50 border-2 border-amber-200 flex items-center justify-center text-4xl shadow-sm shrink-0 animate-bounce" style={{ animationDuration: "3s" }}>
@@ -231,9 +233,9 @@ export default function TestPage({ params }: TestPageProps) {
 
           {/* Core Cambridge English speaking Target prompt */}
           <div className="w-full text-center py-4 border-y-2 border-slate-100 relative mb-2">
-            
+
             <span className="text-xs font-black text-slate-400 uppercase tracking-widest block mb-2">Đọc to câu sau:</span>
-            
+
             <p className="text-2xl md:text-3xl font-black text-slate-800 tracking-tight leading-snug px-4 select-all selection:bg-yellow-200">
               "{currentPrompt.sentence}"
             </p>
@@ -243,10 +245,9 @@ export default function TestPage({ params }: TestPageProps) {
               <button
                 onClick={playTTS}
                 disabled={ttsPlaying || isProcessing}
-                className={`btn-3d-yellow px-5 py-2.5 text-xs font-black uppercase tracking-wider flex items-center gap-1.5 ${
-                  ttsPlaying ? "animate-pulse brightness-90 shadow-none translate-y-[4px]" : 
-                  isProcessing ? "opacity-50 cursor-not-allowed" : "hover:scale-105"
-                }`}
+                className={`btn-3d-yellow px-5 py-2.5 text-xs font-black uppercase tracking-wider flex items-center gap-1.5 ${ttsPlaying ? "animate-pulse brightness-90 shadow-none translate-y-[4px]" :
+                    isProcessing ? "opacity-50 cursor-not-allowed" : "hover:scale-105"
+                  }`}
               >
                 <Volume2 className={`w-4 h-4 ${ttsPlaying ? "animate-bounce" : ""}`} />
                 {ttsPlaying ? "Đang đọc mẫu..." : "Nghe cô đọc mẫu 🔊"}
@@ -296,19 +297,19 @@ export default function TestPage({ params }: TestPageProps) {
             {/* Playful elements floating around inside loading box */}
             <div className="absolute -top-3 -left-3 text-3xl animate-spin" style={{ animationDuration: "6s" }}>⭐</div>
             <div className="absolute -bottom-3 -right-3 text-3xl animate-bounce">🎈</div>
-            
+
             <div className="w-24 h-24 bg-blue-50 border-4 border-dashed border-blue-400 rounded-full flex items-center justify-center mx-auto mb-6 relative">
               <span className="text-5xl animate-spin inline-block" style={{ animationDuration: "12s" }}>🚀</span>
             </div>
-            
+
             <h3 className="text-xl font-black text-blue-600 tracking-tight">
               Đang chấm điểm phát âm...
             </h3>
-            
+
             <p className="text-sm font-extrabold text-slate-500 mt-3 leading-relaxed">
               Cô giáo AI {currentPrompt.mascot} {currentPrompt.animal} đang lắng nghe thật kỹ giọng nói siêu đáng yêu của con để chấm điểm đấy! 🌟
             </p>
-            
+
             <div className="w-full bg-slate-100 rounded-full h-3.5 mt-6 p-0.5 border border-slate-200 overflow-hidden">
               <div className="bg-gradient-to-r from-blue-400 to-indigo-500 h-full rounded-full animate-pulse w-full" />
             </div>

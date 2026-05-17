@@ -2,9 +2,8 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { Mic, Square, Loader2, Sparkles, RefreshCw } from "lucide-react";
-
 interface AudioRecorderProps {
-  onRecordingComplete: (audioBlob: Blob) => void;
+  onRecordingComplete: (audioBlob: Blob, spokenText: string, recognitionSupported: boolean) => void;
   isProcessing: boolean;
   sentence: string;
 }
@@ -21,7 +20,7 @@ export default function AudioRecorder({
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
   const timerIntervalRef = useRef<NodeJS.Timeout | null>(null);
-  
+
   // Audio visualizer refs
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const audioContextRef = useRef<AudioContext | null>(null);
@@ -30,6 +29,10 @@ export default function AudioRecorder({
   const animationFrameIdRef = useRef<number | null>(null);
   const sourceNodeRef = useRef<MediaStreamAudioSourceNode | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
+
+  // Speech Recognition refs
+  const recognitionRef = useRef<any>(null);
+  const spokenTextRef = useRef<string>("");
 
   // Clean up all audio contexts and recorder resources on unmount
   useEffect(() => {
@@ -44,7 +47,7 @@ export default function AudioRecorder({
       clearInterval(timerIntervalRef.current);
       timerIntervalRef.current = null;
     }
-    
+
     // Stop animation loop
     if (animationFrameIdRef.current) {
       cancelAnimationFrame(animationFrameIdRef.current);
@@ -67,7 +70,17 @@ export default function AudioRecorder({
       sourceNodeRef.current.disconnect();
       sourceNodeRef.current = null;
     }
-    
+
+    // Stop and cleanup Speech Recognition
+    if (recognitionRef.current) {
+      try {
+        recognitionRef.current.abort();
+      } catch (e) {
+        console.warn("Lỗi huỷ SpeechRecognition:", e);
+      }
+      recognitionRef.current = null;
+    }
+
     analyserRef.current = null;
     mediaRecorderRef.current = null;
   };
@@ -109,8 +122,12 @@ export default function AudioRecorder({
 
       recorder.onstop = () => {
         const audioBlob = new Blob(audioChunksRef.current, { type: "audio/webm" });
-        onRecordingComplete(audioBlob);
-        cleanupAudioResources();
+        // Cho SpeechRecognition thêm 300ms để dịch xong chữ cuối cùng bé phát âm
+        setTimeout(() => {
+          const SpeechRecognitionAPI = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+          onRecordingComplete(audioBlob, spokenTextRef.current, !!SpeechRecognitionAPI);
+          cleanupAudioResources();
+        }, 300);
       };
 
       // 3. Setup Web Audio API Analyser for live Canvas waves
@@ -130,10 +147,43 @@ export default function AudioRecorder({
       const dataArray = new Uint8Array(bufferLength);
       dataArrayRef.current = dataArray;
 
-      // 4. Start recording and animation
+      // 4. Setup Speech Recognition
+      const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+      if (SpeechRecognition) {
+        const rec = new SpeechRecognition();
+        rec.lang = "en-US";
+        rec.continuous = false;
+        rec.interimResults = false;
+
+        spokenTextRef.current = "";
+
+        rec.onresult = (event: any) => {
+          if (event.results && event.results[0] && event.results[0][0]) {
+            const resultText = event.results[0][0].transcript;
+            console.log("🎙️ [SpeechRecognition] Nhận diện giọng nói thực tế:", resultText);
+            spokenTextRef.current = resultText;
+          }
+        };
+
+        rec.onerror = (event: any) => {
+          console.warn("⚠️ [SpeechRecognition] Lỗi nhận diện:", event.error);
+        };
+
+        recognitionRef.current = rec;
+        try {
+          rec.start();
+        } catch (e) {
+          console.warn("⚠️ [SpeechRecognition] Lỗi khởi chạy nhận diện:", e);
+        }
+      } else {
+        console.warn("⚠️ [SpeechRecognition] Trình duyệt không hỗ trợ Web Speech API.");
+        spokenTextRef.current = "";
+      }
+
+      // 5. Start recording and animation
       recorder.start(100); // Collect data chunks every 100ms
       setIsRecording(true);
-      
+
       // Start recording timer
       timerIntervalRef.current = setInterval(() => {
         setRecordingTime((prev) => prev + 1);
@@ -155,6 +205,13 @@ export default function AudioRecorder({
       mediaRecorderRef.current.stop();
       setIsRecording(false);
     }
+    if (recognitionRef.current) {
+      try {
+        recognitionRef.current.stop();
+      } catch (e) {
+        console.warn("Lỗi dừng SpeechRecognition:", e);
+      }
+    }
   };
 
   // HTML5 Canvas sound waves rendering pipeline
@@ -171,13 +228,13 @@ export default function AudioRecorder({
 
     const draw = () => {
       if (!isRecording) return;
-      
+
       animationFrameIdRef.current = requestAnimationFrame(draw);
       analyser.getByteFrequencyData(dataArray as any);
 
       const width = canvas.width;
       const height = canvas.height;
-      
+
       // Clear canvas with playful gradient background matching layout
       ctx.clearRect(0, 0, width, height);
       ctx.fillStyle = "rgba(250, 248, 245, 0.8)";
@@ -194,16 +251,16 @@ export default function AudioRecorder({
         // Custom kid friendly color mapping: vibrant rainbow transition
         const percent = barHeight / 255;
         const baseHeight = percent * (height * 0.75); // Cap height
-        
+
         const r = Math.floor(16 + percent * 100);
         const g = Math.floor(185 - percent * 50);
         const b = Math.floor(129 + percent * 126);
-        
+
         ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
-        
+
         // Draw centered capsule bars (top and bottom rounded caps)
         const yPos = (height - baseHeight) / 2;
-        
+
         ctx.beginPath();
         if (ctx.roundRect) {
           ctx.roundRect(x, yPos, barWidth - 4, baseHeight + 5, 8);
@@ -272,10 +329,9 @@ export default function AudioRecorder({
         )}
 
         {/* Audio Live Wave Visualizer Canvas */}
-        <div 
-          className={`w-full max-w-md h-32 mx-auto mb-6 rounded-2xl border-2 border-slate-100 bg-slate-50/50 overflow-hidden flex items-center justify-center transition-all ${
-            isRecording ? "scale-100 opacity-100 shadow-inner" : "scale-95 opacity-40 pointer-events-none"
-          }`}
+        <div
+          className={`w-full max-w-md h-32 mx-auto mb-6 rounded-2xl border-2 border-slate-100 bg-slate-50/50 overflow-hidden flex items-center justify-center transition-all ${isRecording ? "scale-100 opacity-100 shadow-inner" : "scale-95 opacity-40 pointer-events-none"
+            }`}
         >
           {isRecording ? (
             <canvas ref={canvasRef} width={450} height={120} className="w-full h-full block" />
