@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { Award, Trophy, Star, Clock, ChevronRight, Volume2, Sparkles } from "lucide-react";
+import { Award, Trophy, Star, Clock, ChevronRight, Volume2, Sparkles, BarChart3 } from "lucide-react";
 
 interface AssessmentItem {
   _id: string;
@@ -110,6 +110,13 @@ export default function Dashboard() {
 
           {/* User Kid Status Dashboard */}
           <div className="flex items-center gap-4 bg-slate-50 border-2 border-slate-200 rounded-2xl px-5 py-2.5 shadow-inner">
+            <Link href="/dashboard">
+              <button className="btn-3d-blue px-3 py-1.5 text-xs font-black flex items-center gap-1">
+                <BarChart3 className="w-4 h-4" />
+                TIẾN ĐỘ
+              </button>
+            </Link>
+
             <div className="flex items-center gap-2 border-r-2 border-slate-200 pr-4">
               <span className="text-2xl">👦🏻</span>
               <div>

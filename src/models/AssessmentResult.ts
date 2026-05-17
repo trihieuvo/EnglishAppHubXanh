@@ -4,15 +4,16 @@ export interface IAssessmentResult extends Document {
   userId: string;
   level: "Starters" | "Movers" | "Flyers";
   sentence: string;
+  spokenText: string;
   recordedAudioUrl: string;
-  score: number; // 0 to 100 points
-  stars: number; // 1 to 5 star rating
-  mispronouncedWords: string[]; // List of lowercase words read incorrectly
+  score: number;
+  stars: number;
+  mispronouncedWords: string[];
   feedback: {
-    tutorComment: string; // Friendly text recommendation
-    tips: string; // Specific pronunciation practice pointers
+    tutorComment: string;
+    tips: string;
   };
-  roadmap: string[]; // 3 next steps/exercises to improve
+  roadmap: string[];
   createdAt: Date;
 }
 
@@ -25,6 +26,7 @@ const AssessmentResultSchema: Schema<IAssessmentResult> = new Schema(
       required: true,
     },
     sentence: { type: String, required: true },
+    spokenText: { type: String, default: "" },
     recordedAudioUrl: { type: String, default: "" },
     score: { type: Number, required: true, min: 0, max: 100 },
     stars: { type: Number, required: true, min: 1, max: 5 },

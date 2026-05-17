@@ -10,6 +10,7 @@ interface AssessmentResultData {
   userId: string;
   level: "Starters" | "Movers" | "Flyers";
   sentence: string;
+  spokenText: string;
   score: number;
   stars: number;
   mispronouncedWords: string[];

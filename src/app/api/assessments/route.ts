@@ -14,6 +14,7 @@ export async function POST(req: NextRequest) {
     const {
       level,
       sentence,
+      spokenText,
       score,
       stars,
       mispronouncedWords,
@@ -36,6 +37,7 @@ export async function POST(req: NextRequest) {
       userId: body.userId || DEFAULT_USER_ID,
       level,
       sentence,
+      spokenText: spokenText || "",
       score,
       stars,
       mispronouncedWords: mispronouncedWords || [],
@@ -123,6 +125,7 @@ export async function GET(req: NextRequest) {
               : "The brave flying lion flew high in the beautiful sky.",
             score: 80,
             stars: 4,
+            spokenText: "",
             mispronouncedWords: levelFromMock === "Starters" ? ["cat"] : levelFromMock === "Movers" ? ["washed"] : ["flew"],
             feedback: {
               tutorComment: "Con làm tốt lắm! Phát âm rất rõ ràng và trôi chảy. Chỉ cần chú ý sửa một chút xíu lỗi nhỏ nữa là đạt 5 sao luôn nè! 🌟🐒",
