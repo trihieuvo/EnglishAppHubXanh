@@ -1006,8 +1006,8 @@ export default function CambridgeImportPage() {
                           {q.part}
                         </td>
 
-                        <td className="py-4 px-4 text-slate-500 w-32 truncate max-w-[130px]" title={q.type}>
-                          {q.type.replace(/_/g, " ")}
+                        <td className="py-4 px-4 text-slate-500 w-32 truncate max-w-[130px]" title={q.type || ""}>
+                          {(q.type || "").replace(/_/g, " ")}
                         </td>
 
                         <td className="py-4 px-4 text-slate-700 font-medium leading-relaxed max-w-xs md:max-w-sm truncate" title={q.examinerScript}>

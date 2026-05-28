@@ -183,13 +183,24 @@ export default function Dashboard() {
 
         {/* 3. Level Selection Section */}
         <section className="mb-14">
-          <div className="text-center md:text-left mb-8">
-            <h3 className="text-2xl font-black text-slate-800 tracking-tight flex items-center justify-center md:justify-start gap-2">
-              🏆 Bé chọn Cấp độ để thử thách nhé:
-            </h3>
-            <p className="text-slate-500 font-bold text-sm mt-1">
-              Mỗi cấp độ được biên soạn kỹ lưỡng theo khung chuẩn Cambridge English Primary.
-            </p>
+          <div className="text-center md:text-left mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <h3 className="text-2xl font-black text-slate-800 tracking-tight flex items-center justify-center md:justify-start gap-2">
+                🏆 Bé chọn Cấp độ để thử thách nhé:
+              </h3>
+              <p className="text-slate-500 font-bold text-sm mt-1">
+                Mỗi cấp độ được biên soạn kỹ lưỡng theo khung chuẩn Cambridge English Primary.
+              </p>
+            </div>
+            
+            {/* NEW CAT BUTTON */}
+            <Link href="/adaptive-test">
+              <button className="bg-gradient-to-r from-emerald-400 to-teal-500 border-b-4 border-teal-700 hover:border-b-0 hover:translate-y-1 text-white rounded-2xl px-6 py-3 font-black tracking-wider uppercase flex items-center gap-2 shadow-lg transition-all animate-bounce-subtle">
+                <Sparkles className="w-5 h-5" />
+                KIỂM TRA NĂNG LỰC BẰNG AI
+                <ChevronRight className="w-5 h-5" />
+              </button>
+            </Link>
           </div>
 
           {/* Cards Grid */}

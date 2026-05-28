@@ -2,6 +2,7 @@ import mongoose, { Schema, Document, Model } from "mongoose";
 
 export interface IAssessmentResult extends Document {
   userId: string;
+  adaptiveSessionId?: string; // Link to AdaptiveSession if from CAT
   level: "Starters" | "Movers" | "Flyers";
   skill: "Speaking" | "Listening" | "Reading" | "Writing";
   sentence: string;
@@ -24,6 +25,7 @@ export interface IAssessmentResult extends Document {
 const AssessmentResultSchema: Schema<IAssessmentResult> = new Schema(
   {
     userId: { type: String, required: true },
+    adaptiveSessionId: { type: String },
     level: {
       type: String,
       enum: ["Starters", "Movers", "Flyers"],

@@ -33,8 +33,21 @@ const UserSchema = new mongoose.Schema(
 
 const QuestionSchema = new mongoose.Schema(
   {
-    text: { type: String, required: true },
-    level: { type: String, enum: ["Starters", "Movers", "Flyers"], required: true },
+    id: { type: String, required: true, unique: true },
+    level: {
+      type: String,
+      enum: ["Starters", "Movers", "Flyers"],
+      required: true,
+    },
+    part: { type: Number, required: true },
+    type: { type: String, required: true },
+    imagePath: { type: String, required: true },
+    contextTags: { type: [String], default: [] },
+    examinerScript: { type: String, required: true },
+    evaluationCriteria: {
+      expectedKeywords: { type: [String], default: [] },
+      targetGrammar: { type: [String], default: [] },
+    },
   },
   { timestamps: true }
 );
@@ -90,14 +103,50 @@ const mockUsers = [
 
 const mockQuestions = [
   // Starters Questions
-  { text: "This is a yellow banana.", level: "Starters" },
-  { text: "The cat is sleeping under the red mat.", level: "Starters" },
+  { 
+    id: "ST_P1_01", level: "Starters", part: 1, type: "Scene_Description", 
+    imagePath: "https://res.cloudinary.com/demo/image/upload/v1312461204/sample.jpg",
+    contextTags: ["bedroom", "cat", "mat"],
+    examinerScript: "Look at the picture. The cat is sleeping under the red mat.",
+    evaluationCriteria: { expectedKeywords: ["cat", "sleeping", "mat"], targetGrammar: ["present continuous"] }
+  },
+  { 
+    id: "ST_P1_02", level: "Starters", part: 1, type: "Object_Card", 
+    imagePath: "https://res.cloudinary.com/demo/image/upload/w_200,h_200,c_fill/v1312461204/sample.jpg",
+    contextTags: ["fruit", "banana"],
+    examinerScript: "This is a yellow banana. Do you like bananas?",
+    evaluationCriteria: { expectedKeywords: ["banana", "yellow"], targetGrammar: [] }
+  },
   // Movers Questions
-  { text: "The cute monkey is climbing a tall tree.", level: "Movers" },
-  { text: "They are playing soccer in the green field.", level: "Movers" },
+  { 
+    id: "MV_P2_01", level: "Movers", part: 2, type: "Storytelling", 
+    imagePath: "https://res.cloudinary.com/demo/image/upload/v1312461204/sample.jpg",
+    contextTags: ["monkey", "tree", "jungle"],
+    examinerScript: "The cute monkey is climbing a tall tree.",
+    evaluationCriteria: { expectedKeywords: ["monkey", "climbing", "tree"], targetGrammar: ["present continuous"] }
+  },
+  { 
+    id: "MV_P2_02", level: "Movers", part: 2, type: "Find_Differences", 
+    imagePath: "https://res.cloudinary.com/demo/image/upload/v1312461204/sample.jpg",
+    contextTags: ["park", "soccer"],
+    examinerScript: "They are playing soccer in the green field. Find the difference.",
+    evaluationCriteria: { expectedKeywords: ["playing", "soccer", "field"], targetGrammar: ["present continuous"] }
+  },
   // Flyers Questions
-  { text: "A brave lion stands proudly on top of the mountain.", level: "Flyers" },
-  { text: "The astronaut successfully landed on the bright moon.", level: "Flyers" },
+  { 
+    id: "FL_P3_01", level: "Flyers", part: 3, type: "Scene_Description", 
+    imagePath: "https://res.cloudinary.com/demo/image/upload/v1312461204/sample.jpg",
+    contextTags: ["lion", "mountain"],
+    examinerScript: "A brave lion stands proudly on top of the mountain. Tell me more.",
+    evaluationCriteria: { expectedKeywords: ["lion", "stands", "mountain"], targetGrammar: ["present simple"] }
+  },
+  { 
+    id: "FL_P3_02", level: "Flyers", part: 3, type: "Storytelling", 
+    imagePath: "https://res.cloudinary.com/demo/image/upload/v1312461204/sample.jpg",
+    contextTags: ["astronaut", "moon", "space"],
+    examinerScript: "The astronaut successfully landed on the bright moon. Continue the story.",
+    evaluationCriteria: { expectedKeywords: ["astronaut", "landed", "moon"], targetGrammar: ["past simple"] }
+  },
 ];
 
 async function seed() {

@@ -4,7 +4,14 @@ export interface IUser extends Document {
   name: string;
   age: number;
   currentLevel: "Starters" | "Movers" | "Flyers";
+  estimatedLevel?: "Starters" | "Movers" | "Flyers";
   totalStars: number;
+  parentContact?: {
+    parentName: string;
+    phone?: string;
+    email?: string;
+  };
+  catHistory?: string[]; // Array of AdaptiveSession IDs
   createdAt: Date;
 }
 
@@ -17,7 +24,17 @@ const UserSchema: Schema<IUser> = new Schema(
       enum: ["Starters", "Movers", "Flyers"],
       default: "Starters",
     },
+    estimatedLevel: {
+      type: String,
+      enum: ["Starters", "Movers", "Flyers"],
+    },
     totalStars: { type: Number, default: 0 },
+    parentContact: {
+      parentName: { type: String },
+      phone: { type: String },
+      email: { type: String },
+    },
+    catHistory: { type: [String], default: [] },
   },
   { timestamps: true }
 );
