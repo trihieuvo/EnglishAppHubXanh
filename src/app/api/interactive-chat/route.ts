@@ -51,13 +51,13 @@ BẮT BUỘC TRẢ VỀ JSON với định dạng: { "aiResponse": "câu trả l
 
     let readingAccuracy = 100;
     if (stage === "reading" && transcribedText) {
-      const referenceStory = "Max is a happy little monkey who lives in a very tall coconut tree in the jungle. He loves to eat sweet yellow bananas every morning. Today, Max looks down and sees a small green frog sitting on a leaf in the pond. The frog is jumping up and down and singing a funny song. Max waves hello and laughs happily!";
+      const referenceStory = context.referenceStory || "Max is a happy little monkey who lives in a very tall coconut tree in the jungle. He loves to eat sweet yellow bananas every morning. Today, Max looks down and sees a small green frog sitting on a leaf in the pond. The frog is jumping up and down and singing a funny song. Max waves hello and laughs happily!";
       const storyWords = referenceStory.toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?]/g, "").split(/\s+/).filter(Boolean);
       const spokenWords = transcribedText.toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?]/g, "").split(/\s+/).filter(Boolean);
       
       let matchedCount = 0;
       const tempSpoken = [...spokenWords];
-      storyWords.forEach((word) => {
+      storyWords.forEach((word: string) => {
         const index = tempSpoken.indexOf(word);
         if (index !== -1) {
           matchedCount++;

@@ -51,6 +51,12 @@ export default function InteractiveTest() {
   const [kidAge, setKidAge] = useState("7");
   const [favAnimal, setFavAnimal] = useState("");
   
+  // Dynamic AI YLE Question Generator states
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [dynamicStory, setDynamicStory] = useState("");
+  const [dynamicMcq, setDynamicMcq] = useState<any>(null);
+  const [dynamicSpelling, setDynamicSpelling] = useState<any[]>([]);
+
   // Stage 2: 2 Pictures Sequence States
   const [picQuestions, setPicQuestions] = useState<any[]>([]);
   const [pictureIndex, setPictureIndex] = useState(0);
@@ -91,10 +97,11 @@ export default function InteractiveTest() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // Longer reference story
-  const referenceStory = "Max is a happy little monkey who lives in a very tall coconut tree in the jungle. He loves to eat sweet yellow bananas every morning. Today, Max looks down and sees a small green frog sitting on a leaf in the pond. The frog is jumping up and down and singing a funny song. Max waves hello and laughs happily!";
+  // 1. Dynamic Reference story fallback
+  const activeStory = dynamicStory || "Max is a happy little monkey who lives in a very tall coconut tree in the jungle. He loves to eat sweet yellow bananas every morning. Today, Max looks down and sees a small green frog sitting on a leaf in the pond. The frog is jumping up and down and singing a funny song. Max waves hello and laughs happily!";
 
-  const mcqQuestion = {
+  // 2. Dynamic MCQ Question fallback
+  const activeMcq = dynamicMcq || {
     question: "What does Max love to eat every morning?",
     options: [
       "Red apples 🍎",
@@ -104,7 +111,8 @@ export default function InteractiveTest() {
     correctIndex: 1
   };
 
-  const spellingTasks = [
+  // 3. Dynamic Spelling Task fallback
+  const activeSpelling = (dynamicSpelling && dynamicSpelling.length >= 2) ? dynamicSpelling : [
     {
       prompt: "Can you spell the word for the animal that lives in the tree? It starts with 'm'.",
       correctWord: "monkey"
@@ -119,31 +127,6 @@ export default function InteractiveTest() {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isProcessing, stage]);
-
-  // Fetch standard YLE questions for Stage 2 (Miêu tả tranh)
-  useEffect(() => {
-    const fetchQuestions = async () => {
-      try {
-        const res = await fetch("/api/questions");
-        const data = await res.json();
-        if (data.success) {
-          const questionsWithImages = data.data.filter((q: any) => q.type === "Scene_Description" || q.imagePath);
-          if (questionsWithImages.length > 0) {
-            // Pick a Movers scene or any questions
-            const moversQuestions = questionsWithImages.filter((q: any) => q.level === "Movers");
-            const sortedQuestions = moversQuestions.length > 0 ? moversQuestions : questionsWithImages;
-            
-            setPicQuestions(sortedQuestions);
-            // Default first picture
-            setCurrentQuestion(sortedQuestions[0]);
-          }
-        }
-      } catch (err) {
-        console.error("Lỗi lấy câu hỏi:", err);
-      }
-    };
-    fetchQuestions();
-  }, []);
 
   const playTTS = (text: string) => {
     const cleanText = text.replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, '');
@@ -160,9 +143,30 @@ export default function InteractiveTest() {
     playTTS(content);
   };
 
-  const startTest = () => {
-    setStage("warmup");
-    addAiMessage("Hello! Welcome to the English test. What's your name?");
+  const startTest = async () => {
+    setIsGenerating(true);
+    try {
+      const res = await fetch("/api/interactive-test/generate");
+      const data = await res.json();
+      if (data.success) {
+        setPicQuestions(data.pictures);
+        setCurrentQuestion(data.pictures[0]);
+        setDynamicStory(data.story);
+        setDynamicMcq(data.mcq);
+        setDynamicSpelling(data.spelling);
+        console.log("🎯 [AI Generator] Đã sinh đề thi động thành công!");
+      }
+    } catch (err) {
+      console.error("Lỗi gọi API sinh đề thi động:", err);
+      // Fallback variables will take place automatically
+    } finally {
+      setIsGenerating(false);
+      setStage("warmup");
+      // Add slight delay to make transitions natural
+      setTimeout(() => {
+        addAiMessage("Hello! Welcome to the English test. What's your name?");
+      }, 500);
+    }
   };
 
   const startRecording = async () => {
@@ -210,6 +214,10 @@ export default function InteractiveTest() {
         formData.append("context", JSON.stringify({
           pictureIndex,
           expectedKeywords: currentQuestion.evaluationCriteria?.expectedKeywords || []
+        }));
+      } else if (stage === "reading") {
+        formData.append("context", JSON.stringify({
+          referenceStory: activeStory
         }));
       }
 
@@ -282,6 +290,9 @@ export default function InteractiveTest() {
                 const nextQuestion = picQuestions[1 % picQuestions.length] || currentQuestion;
                 setCurrentQuestion(nextQuestion);
                 
+                // Rename previous picture messages to avoid affecting Picture 2's turn count on backend
+                setMessages(prev => prev.map(m => m.stage === "picture" ? { ...m, stage: "intro" } as Message : m));
+                
                 setKeywordsMentioned([]);
                 setProbingTurnsCount(0);
                 setIsProcessing(false);
@@ -314,7 +325,7 @@ export default function InteractiveTest() {
     
     setSelectedMcqOption(optionIndex);
     setMcqAnswered(true);
-    const correct = optionIndex === mcqQuestion.correctIndex;
+    const correct = optionIndex === activeMcq.correctIndex;
     setIsMcqCorrect(correct);
 
     if (correct) {
@@ -323,7 +334,7 @@ export default function InteractiveTest() {
         setStage("writing");
       }, 3500);
     } else {
-      playTTS(`Good try! Max actually loves ${mcqQuestion.options[mcqQuestion.correctIndex]}. Let's do some spelling now!`);
+      playTTS(`Good try! Max actually loves ${activeMcq.options[activeMcq.correctIndex]}. Let's do some spelling now!`);
       setTimeout(() => {
         setStage("writing");
       }, 4500);
@@ -335,7 +346,7 @@ export default function InteractiveTest() {
     e.preventDefault();
     if (!typedWord.trim()) return;
 
-    const isCorrect = typedWord.toLowerCase().trim() === spellingTasks[writingTaskIndex].correctWord;
+    const isCorrect = typedWord.toLowerCase().trim() === activeSpelling[writingTaskIndex].correctWord.toLowerCase().trim();
 
     if (writingTaskIndex === 0) {
       // Save Task 1 result
@@ -432,7 +443,7 @@ export default function InteractiveTest() {
             sentence: skill === "Speaking" 
               ? "Entrance Interview: Life Communication & Double Picture Probing" 
               : skill === "Reading" 
-              ? referenceStory 
+              ? activeStory 
               : "Double word spelling assessment",
             score: skillScore,
             stars,
@@ -508,6 +519,24 @@ export default function InteractiveTest() {
 
   const overallLevelInfo = getOverallLevel(scores.speaking);
 
+  // 0. Dynamic YLE Test Loading overlay
+  if (isGenerating) {
+    return (
+      <div className="w-full min-h-screen bg-pastel-bg flex flex-col items-center justify-center p-6 text-center select-none">
+        <div className="relative mb-6">
+          <div className="w-24 h-24 rounded-full border-8 border-indigo-300 border-t-indigo-600 animate-spin" />
+          <span className="text-4xl absolute inset-0 flex items-center justify-center animate-bounce">👩‍🏫</span>
+        </div>
+        <h2 className="text-2xl font-black text-slate-800 animate-pulse">
+          Cô giáo AI đang soạn bộ đề thi riêng cho con...
+        </h2>
+        <p className="text-sm text-slate-500 mt-3 max-w-sm leading-relaxed">
+          Đợi một chút xíu nhé! Cô đang lấy những bức tranh đẹp nhất từ MongoDB và nhờ trí tuệ nhân tạo dệt thành câu chuyện đọc hiểu lôi cuốn nhất dành riêng cho con đấy! 🚀✨
+        </p>
+      </div>
+    );
+  }
+
   // 1. Intro view
   if (stage === "intro") {
     return (
@@ -534,11 +563,11 @@ export default function InteractiveTest() {
             </div>
             <div className="flex items-start gap-2.5 text-xs text-slate-600 font-bold">
               <span className="w-5 h-5 rounded-full bg-emerald-100 border border-emerald-200 text-emerald-500 flex items-center justify-center shrink-0">3</span>
-              <span><strong>Reading:</strong> Đọc to <strong>Truyện dài</strong> & MCQ trắc nghiệm</span>
+              <span><strong>Reading:</strong> Đọc to <strong>Truyện dài động</strong> & MCQ trắc nghiệm</span>
             </div>
             <div className="flex items-start gap-2.5 text-xs text-slate-600 font-bold">
               <span className="w-5 h-5 rounded-full bg-indigo-100 border border-indigo-200 text-indigo-500 flex items-center justify-center shrink-0">4</span>
-              <span><strong>Writing:</strong> Đánh vần và gõ <strong>2 câu viết</strong> (Không gợi ý!)</span>
+              <span><strong>Writing:</strong> Đánh vần và gõ <strong>2 từ vựng</strong> (Không gợi ý!)</span>
             </div>
           </div>
 
@@ -548,7 +577,7 @@ export default function InteractiveTest() {
 
           <button 
             onClick={startTest}
-            className="w-full btn-3d-green py-4 font-bold text-xl shadow-lg hover:scale-105 transition-transform"
+            className="w-full btn-3d-green py-4 font-bold text-xl shadow-lg hover:scale-105 transition-transform cursor-pointer"
           >
             <PlayCircle className="inline-block mr-2 w-6 h-6 animate-pulse" />
             BẮT ĐẦU PHÒNG THI
@@ -902,7 +931,7 @@ export default function InteractiveTest() {
               
               <div className="bg-white border-4 border-emerald-300 rounded-3xl p-6 shadow-md my-4">
                 <p className="text-base md:text-lg font-bold text-slate-800 leading-relaxed font-sans select-none">
-                  "{referenceStory}"
+                  "{activeStory}"
                 </p>
               </div>
             </div>
@@ -916,15 +945,15 @@ export default function InteractiveTest() {
               
               <div className="bg-white border-4 border-blue-200 rounded-3xl p-5 shadow-sm my-4 text-center">
                 <p className="text-lg md:text-xl font-extrabold text-slate-700">
-                  {mcqQuestion.question}
+                  {activeMcq.question}
                 </p>
               </div>
 
               {/* Interactive MCQ Choices */}
               <div className="flex flex-col gap-3.5 mt-6 w-full max-w-md mx-auto text-left">
-                {mcqQuestion.options.map((option, idx) => {
+                {activeMcq.options.map((option: string, idx: number) => {
                   const isSelected = selectedMcqOption === idx;
-                  const isCorrectOption = idx === mcqQuestion.correctIndex;
+                  const isCorrectOption = idx === activeMcq.correctIndex;
                   
                   let optionClass = "bg-white border-2 border-slate-200 text-slate-700 hover:border-blue-400";
                   if (mcqAnswered) {
@@ -975,7 +1004,7 @@ export default function InteractiveTest() {
               </div>
               
               <p className="text-slate-600 font-extrabold text-sm leading-relaxed mb-4 text-center">
-                Cô giáo AI hỏi: "{spellingTasks[writingTaskIndex].prompt}"
+                Cô giáo AI hỏi: "{activeSpelling[writingTaskIndex].prompt}"
               </p>
 
               <form onSubmit={handleWritingSubmit} className="w-full">
@@ -1001,7 +1030,7 @@ export default function InteractiveTest() {
 
               {writingSubmitted && (
                 <div className="mt-4 animate-bounce-subtle text-xs font-black text-center">
-                  {typedWord.toLowerCase().trim() === spellingTasks[writingTaskIndex].correctWord ? (
+                  {typedWord.toLowerCase().trim() === activeSpelling[writingTaskIndex].correctWord.toLowerCase().trim() ? (
                     <span className="text-emerald-600">🎉 Xuất sắc! Con đã viết chính xác rồi!</span>
                   ) : (
                     <span className="text-rose-500">✍️ Con viết gần đúng rồi, cô đang ghi nhận điểm nhé!</span>
