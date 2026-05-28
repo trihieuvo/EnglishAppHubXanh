@@ -23,7 +23,7 @@ EnglishAppHubXanh là một ứng dụng web học Tiếng Anh tương tác cao 
 *   **Đồng bộ phản hồi lỗi**: Khi bé nhấn vào các từ vựng phát âm sai trên bảng điểm, hệ thống sẽ phát âm mẫu chuẩn xác từ đó theo đúng Accent bé đã chọn.
 
 ### 3. Bảng điểm 3D trực quan & Lộ trình sửa lỗi
-*   Hệ thống chấm điểm theo sao vàng (1-5 sao) và huy chương danh giá chuẩn Cambridge (Kim Cương, Vàng, Bạc, Đồng).
+*   Hệ thống chấm điểm theo sao (1-5 sao) và huy chương danh giá chuẩn Cambridge (Kim Cương, Vàng, Bạc, Đồng).
 *   Gợi ý nhận xét ấm áp từ Giáo viên AI và **Lộ trình tự luyện 3 bài tập nhỏ** được thiết kế riêng biệt để giúp con khắc phục những lỗi sai vừa mắc phải.
 
 ---
