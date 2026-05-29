@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --color-sunbeam: #fbbf24;
   --color-sunbeam-hover: #f59e0b;
@@ -13,6 +15,9 @@
   --color-grape-hover: #7c3aed;
   --color-cute-orange: #f97316;
   --color-pastel-bg: #faf8f5;
+  --color-dark-bg: #0f172a;
+  --color-dark-surface: #1e293b;
+  --color-dark-border: #334155;
   
   --font-nunito: var(--font-nunito);
   
@@ -41,6 +46,13 @@ body {
   color: #1e293b;
   font-family: var(--font-nunito), Arial, sans-serif;
   overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.dark body,
+:where(.dark) body {
+  background-color: #0f172a;
+  color: #e2e8f0;
 }
 
 /* Duolingo-style 3D tactile buttons */
@@ -223,6 +235,12 @@ body {
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
+:where(.dark) .btn-3d-gray {
+  background-color: #334155;
+  color: #cbd5e1;
+  border-bottom-color: #1e293b;
+}
+
 .btn-3d-gray:hover {
   filter: brightness(1.02);
 }
@@ -244,3 +262,7 @@ body {
   z-index: 0;
 }
 
+:where(.dark) .bubble-bg {
+  background: radial-gradient(circle at 30% 30%, rgba(99, 102, 241, 0.15), rgba(99, 102, 241, 0.03));
+  border: 1px solid rgba(99, 102, 241, 0.15);
+}

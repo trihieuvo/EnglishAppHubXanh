@@ -158,11 +158,11 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="w-full min-h-screen pb-16 relative bg-pastel-bg">
+    <div className="w-full min-h-screen pb-16 relative bg-pastel-bg dark:bg-dark-bg">
       <div className="bubble-bg top-20 left-10 w-24 h-24 animate-float" style={{ animationDelay: "1s" }} />
       <div className="bubble-bg bottom-20 right-12 w-28 h-28 animate-float" style={{ animationDelay: "3s" }} />
 
-      <header className="w-full bg-white border-b-4 border-slate-100 py-4 px-4 sticky top-0 z-30 shadow-sm">
+      <header className="w-full bg-white dark:bg-slate-900 border-b-4 border-slate-100 dark:border-slate-700 py-3 md:py-4 px-3 md:px-4 sticky top-0 z-30 shadow-sm">
         <div className="max-w-4xl mx-auto flex items-center justify-between">
           <Link href="/">
             <button className="btn-3d-gray px-4 py-2.5 text-xs font-black flex items-center gap-1">
@@ -171,24 +171,24 @@ export default function DashboardPage() {
             </button>
           </Link>
 
-          <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 px-4 py-1.5 rounded-2xl">
-            <BarChart3 className="w-5 h-5 text-blue-500" />
-            <span className="text-sm font-black text-slate-700 uppercase tracking-wider">TIẾN ĐỘ HỌC TẬP</span>
+          <div className="flex items-center gap-1.5 md:gap-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-600 px-3 md:px-4 py-1 md:py-1.5 rounded-2xl">
+            <BarChart3 className="w-4 h-4 md:w-5 md:h-5 text-blue-500" />
+            <span className="text-[10px] md:text-sm font-black text-slate-700 dark:text-slate-200 uppercase tracking-wider">TIẾN ĐỘ HỌC TẬP</span>
           </div>
 
-          <div className="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center border-2 border-emerald-300">
+          <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-emerald-100 dark:bg-emerald-950/50 flex items-center justify-center border-2 border-emerald-300 dark:border-emerald-700">
             <span className="text-lg">📈</span>
           </div>
         </div>
       </header>
 
-      <main className="max-w-4xl w-full mx-auto px-4 mt-8 flex flex-col gap-8">
+      <main className="max-w-4xl w-full mx-auto px-3 md:px-4 mt-6 md:mt-8 flex flex-col gap-6 md:gap-8">
         
         {/* 1. Scoreboard Summary Card */}
-        <section className="bg-white rounded-3xl border-4 border-amber-200 p-6 shadow-xl relative overflow-hidden">
+        <section className="bg-white dark:bg-slate-900 rounded-3xl border-4 border-amber-200 dark:border-amber-900 p-4 md:p-6 shadow-xl relative overflow-hidden">
           <div className="absolute top-2 right-6 text-3xl animate-bounce" style={{ animationDelay: "1s" }}>🏆</div>
 
-          <h2 className="text-2xl font-black text-slate-800 mb-6 flex items-center gap-2">
+          <h2 className="text-xl md:text-2xl font-black text-slate-800 dark:text-slate-100 mb-4 md:mb-6 flex items-center gap-2">
             <TrendingUp className="w-6 h-6 text-emerald-500" />
             Tổng quan thành tích của bé
           </h2>
@@ -233,8 +233,8 @@ export default function DashboardPage() {
         </section>
 
         {/* 2. Skill-by-skill Breakdown Performance Rings */}
-        <section className="bg-white rounded-3xl border-4 border-slate-100 p-6 shadow-xl">
-          <h3 className="text-xl font-black text-slate-800 mb-6 flex items-center gap-2 border-b border-slate-100 pb-3">
+        <section className="bg-white dark:bg-slate-900 rounded-3xl border-4 border-slate-100 dark:border-slate-700 p-4 md:p-6 shadow-xl">
+          <h3 className="text-lg md:text-xl font-black text-slate-800 dark:text-slate-100 mb-4 md:mb-6 flex items-center gap-2 border-b border-slate-100 dark:border-slate-700 pb-3">
             <TrendingUp className="w-6 h-6 text-indigo-500" />
             Chi tiết 4 kỹ năng của bé 🌟
           </h3>
@@ -322,8 +322,8 @@ export default function DashboardPage() {
 
         {/* 3. Speaking mispronounced words log */}
         {topWrongWords.length > 0 && (
-          <section className="bg-white rounded-3xl border-4 border-rose-200 p-6 shadow-xl">
-            <h3 className="text-xl font-black text-slate-800 mb-4 flex items-center gap-2">
+          <section className="bg-white dark:bg-slate-900 rounded-3xl border-4 border-rose-200 dark:border-rose-900 p-4 md:p-6 shadow-xl">
+            <h3 className="text-lg md:text-xl font-black text-slate-800 dark:text-slate-100 mb-4 flex items-center gap-2">
               <AlertTriangle className="w-6 h-6 text-rose-500" />
               Top từ bé hay phát âm sai nhất khi Luyện Nói 🔊
             </h3>
@@ -349,8 +349,8 @@ export default function DashboardPage() {
         )}
 
         {/* 4. Complete assessment history */}
-        <section className="bg-white rounded-3xl border-4 border-slate-100 p-6 shadow-xl">
-          <h3 className="text-xl font-black text-slate-800 mb-4 flex items-center gap-2">
+        <section className="bg-white dark:bg-slate-900 rounded-3xl border-4 border-slate-100 dark:border-slate-700 p-4 md:p-6 shadow-xl">
+          <h3 className="text-lg md:text-xl font-black text-slate-800 dark:text-slate-100 mb-4 flex items-center gap-2">
             <BookOpen className="w-6 h-6 text-blue-500" />
             Lịch sử học tập của con 📝
           </h3>
@@ -433,7 +433,7 @@ export default function DashboardPage() {
           </div>
         </section>
 
-        <div className="text-center mt-4 flex justify-center gap-4">
+        <div className="text-center mt-4 flex flex-col sm:flex-row justify-center gap-3 md:gap-4">
           <Link href="/">
             <button className="btn-3d-green px-8 py-4 text-sm tracking-wider uppercase">
               LUYỆN THÊM BÀI MỚI 🚀

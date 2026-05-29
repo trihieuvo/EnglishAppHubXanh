@@ -522,15 +522,15 @@ export default function InteractiveTest() {
   // 0. Dynamic YLE Test Loading overlay
   if (isGenerating) {
     return (
-      <div className="w-full min-h-screen bg-pastel-bg flex flex-col items-center justify-center p-6 text-center select-none">
+      <div className="w-full min-h-screen bg-pastel-bg dark:bg-dark-bg flex flex-col items-center justify-center p-4 md:p-6 text-center select-none">
         <div className="relative mb-6">
           <div className="w-24 h-24 rounded-full border-8 border-indigo-300 border-t-indigo-600 animate-spin" />
           <span className="text-4xl absolute inset-0 flex items-center justify-center animate-bounce">👩‍🏫</span>
         </div>
-        <h2 className="text-2xl font-black text-slate-800 animate-pulse">
+        <h2 className="text-xl md:text-2xl font-black text-slate-800 dark:text-slate-100 animate-pulse">
           Cô giáo AI đang soạn bộ đề thi riêng cho con...
         </h2>
-        <p className="text-sm text-slate-500 mt-3 max-w-sm leading-relaxed">
+        <p className="text-xs md:text-sm text-slate-500 dark:text-slate-400 mt-3 max-w-sm leading-relaxed">
           Đợi một chút xíu nhé! Cô đang lấy những bức tranh đẹp nhất từ MongoDB và nhờ trí tuệ nhân tạo dệt thành câu chuyện đọc hiểu lôi cuốn nhất dành riêng cho con đấy! 🚀✨
         </p>
       </div>
@@ -540,18 +540,18 @@ export default function InteractiveTest() {
   // 1. Intro view
   if (stage === "intro") {
     return (
-      <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-4 relative overflow-hidden">
+      <div className="min-h-screen bg-slate-50 dark:bg-dark-bg flex flex-col items-center justify-center p-4 relative overflow-hidden">
         {/* Decorative background bubbles */}
         <div className="bubble-bg top-12 left-8 w-24 h-24 animate-float" style={{ animationDelay: "0s" }} />
         <div className="bubble-bg top-32 right-12 w-28 h-28 animate-float" style={{ animationDelay: "3s" }} />
         <div className="bubble-bg bottom-16 left-16 w-32 h-32 animate-float" style={{ animationDelay: "6s" }} />
 
-        <div className="bg-white p-8 rounded-3xl shadow-xl max-w-md w-full text-center border-4 border-blue-100 relative z-10">
+        <div className="bg-white dark:bg-slate-900 p-5 md:p-8 rounded-3xl shadow-xl max-w-md w-full text-center border-4 border-blue-100 dark:border-blue-900 relative z-10">
           <div className="text-6xl mb-4 animate-bounce" style={{ animationDuration: "2.5s" }}>🌟</div>
-          <h1 className="text-3xl font-black text-blue-600 mb-2">BÀI THI TƯƠNG TÁC AI</h1>
-          <h3 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-6">Đánh giá năng lực đầu vào</h3>
+          <h1 className="text-2xl md:text-3xl font-black text-blue-600 dark:text-blue-400 mb-2">BÀI THI TƯƠNG TÁC AI</h1>
+          <h3 className="text-xs md:text-sm font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 md:mb-6">Đánh giá năng lực đầu vào</h3>
           
-          <div className="bg-slate-50 rounded-2xl p-4 text-left border border-slate-200 space-y-3 mb-8">
+          <div className="bg-slate-50 dark:bg-slate-800 rounded-2xl p-3 md:p-4 text-left border border-slate-200 dark:border-slate-600 space-y-2.5 md:space-y-3 mb-6 md:mb-8">
             <h4 className="font-extrabold text-xs text-slate-500 uppercase tracking-wider">Lộ trình bài test:</h4>
             <div className="flex items-start gap-2.5 text-xs text-slate-600 font-bold">
               <span className="w-5 h-5 rounded-full bg-pink-100 border border-pink-200 text-pink-500 flex items-center justify-center shrink-0">1</span>
@@ -571,7 +571,7 @@ export default function InteractiveTest() {
             </div>
           </div>
 
-          <p className="text-xs text-slate-500 mb-8 font-extrabold">
+          <p className="text-[10px] md:text-xs text-slate-500 dark:text-slate-400 mb-6 md:mb-8 font-extrabold">
             Bé hãy bật loa thật to và chuẩn bị sát Mic để thi cùng cô giáo AI nhé! 🎤👩‍🏫
           </p>
 
@@ -583,7 +583,7 @@ export default function InteractiveTest() {
             BẮT ĐẦU PHÒNG THI
           </button>
           
-          <Link href="/" className="block mt-4 text-slate-400 font-bold hover:text-slate-600 text-xs">
+          <Link href="/" className="block mt-4 text-slate-400 dark:text-slate-500 font-bold hover:text-slate-600 dark:hover:text-slate-300 text-xs">
             Quay lại Trang Chủ
           </Link>
         </div>
@@ -594,14 +594,14 @@ export default function InteractiveTest() {
   // 2. Report Card view (Results screen)
   if (stage === "results") {
     return (
-      <div className="w-full min-h-screen pb-20 relative bg-pastel-bg overflow-x-hidden">
+      <div className="w-full min-h-screen pb-20 relative bg-pastel-bg dark:bg-dark-bg overflow-x-hidden">
         {/* Decorative bubbles */}
         <div className="bubble-bg top-12 left-8 w-24 h-24 animate-float" style={{ animationDelay: "0s" }} />
         <div className="bubble-bg top-32 right-12 w-28 h-28 animate-float" style={{ animationDelay: "3s" }} />
         <div className="bubble-bg bottom-16 left-16 w-32 h-32 animate-float" style={{ animationDelay: "6s" }} />
 
         {/* Header bar */}
-        <header className="w-full bg-white border-b-4 border-slate-100 py-4 px-4 sticky top-0 z-30 shadow-sm">
+        <header className="w-full bg-white dark:bg-slate-900 border-b-4 border-slate-100 dark:border-slate-700 py-3 md:py-4 px-3 md:px-4 sticky top-0 z-30 shadow-sm">
           <div className="max-w-4xl mx-auto flex items-center justify-between">
             <Link href="/">
               <button className="btn-3d-gray px-4 py-2.5 text-xs font-black flex items-center gap-1">
@@ -609,23 +609,23 @@ export default function InteractiveTest() {
               </button>
             </Link>
             
-            <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 px-4 py-1.5 rounded-2xl">
+            <div className="flex items-center gap-1.5 md:gap-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-600 px-3 md:px-4 py-1 md:py-1.5 rounded-2xl">
               <Trophy className="w-5 h-5 text-amber-500 animate-bounce" />
-              <span className="text-sm font-black text-slate-700 uppercase tracking-wider">
+              <span className="text-[10px] md:text-sm font-black text-slate-700 dark:text-slate-200 uppercase tracking-wider">
                 Kết Quả Đánh Giá Năng Lực Đầu Vào
               </span>
             </div>
 
-            <div className="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center border-2 border-emerald-300">
+            <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-emerald-100 dark:bg-emerald-950/50 flex items-center justify-center border-2 border-emerald-300 dark:border-emerald-700">
               <span className="text-lg">👑</span>
             </div>
           </div>
         </header>
 
-        <main className="max-w-3xl w-full mx-auto px-4 mt-8 flex flex-col gap-8 relative z-10">
+        <main className="max-w-3xl w-full mx-auto px-3 md:px-4 mt-6 md:mt-8 flex flex-col gap-6 md:gap-8 relative z-10">
           
           {/* Certificate Showcase Card */}
-          <section className="bg-white rounded-3xl border-4 border-amber-300 p-8 shadow-xl text-center relative overflow-hidden">
+          <section className="bg-white dark:bg-slate-900 rounded-3xl border-4 border-amber-300 dark:border-amber-800 p-5 md:p-8 shadow-xl text-center relative overflow-hidden">
             <div className="absolute top-2 left-6 text-2xl animate-bounce" style={{ animationDelay: "1s" }}>✨</div>
             <div className="absolute top-8 right-8 text-2xl animate-bounce" style={{ animationDelay: "2.5s" }}>🎈</div>
             
@@ -634,10 +634,10 @@ export default function InteractiveTest() {
               Chứng Nhận Năng Lực Quốc Tế Cambridge YLE
             </span>
 
-            <h2 className="text-3xl font-black text-slate-800 tracking-tight">
+            <h2 className="text-2xl md:text-3xl font-black text-slate-800 dark:text-slate-100 tracking-tight">
               BẢNG KẾT QUẢ CỦA BÉ {kidName.toUpperCase()}
             </h2>
-            <p className="text-sm text-slate-400 font-extrabold mt-1">Tuổi học viên: {kidAge} tuổi</p>
+            <p className="text-xs md:text-sm text-slate-400 dark:text-slate-500 font-extrabold mt-1">Tuổi học viên: {kidAge} tuổi</p>
 
             {/* Recommended level badge */}
             <div className="my-8 max-w-sm mx-auto">
@@ -658,8 +658,8 @@ export default function InteractiveTest() {
             </div>
 
             {/* YLE Shields Matrix Grid */}
-            <div className="bg-slate-50 border-2 border-slate-200 rounded-3xl p-6 shadow-inner mt-6">
-              <h3 className="text-sm font-black text-slate-500 uppercase tracking-wider mb-6">
+            <div className="bg-slate-50 dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-600 rounded-3xl p-4 md:p-6 shadow-inner mt-4 md:mt-6">
+              <h3 className="text-xs md:text-sm font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-4 md:mb-6">
                 Đánh giá theo 4 kỹ năng ngôn ngữ
               </h3>
               
@@ -721,7 +721,7 @@ export default function InteractiveTest() {
           </section>
 
           {/* AI Feedback Section */}
-          <section className="bg-white rounded-3xl border-4 border-slate-100 p-6 md:p-8 shadow-xl">
+          <section className="bg-white dark:bg-slate-900 rounded-3xl border-4 border-slate-100 dark:border-slate-700 p-4 md:p-6 md:p-8 shadow-xl">
             <div className="flex flex-col sm:flex-row items-start gap-5">
               
               <div className="shrink-0 flex sm:flex-col items-center gap-2 self-center sm:self-start bg-slate-50 border-2 border-slate-200 rounded-2xl p-4 w-full sm:w-28 text-center shadow-inner">
@@ -754,7 +754,7 @@ export default function InteractiveTest() {
           </section>
 
           {/* Learning Roadmap checklist */}
-          <section className="bg-white rounded-3xl border-4 border-slate-100 p-6 md:p-8 shadow-xl">
+          <section className="bg-white dark:bg-slate-900 rounded-3xl border-4 border-slate-100 dark:border-slate-700 p-4 md:p-6 md:p-8 shadow-xl">
             <h3 className="text-xl font-black text-slate-800 flex items-center gap-2 mb-4 border-b pb-4">
               <Compass className="w-6 h-6 text-blue-500 animate-spin" style={{ animationDuration: "8s" }} />
               Lộ trình rèn luyện nâng cao năng lực 🚀
@@ -852,16 +852,16 @@ export default function InteractiveTest() {
 
   // 3. Main Testing stages interface
   return (
-    <div className="min-h-screen bg-slate-100 flex flex-col max-w-4xl mx-auto h-screen relative">
+    <div className="min-h-screen bg-slate-100 dark:bg-dark-bg flex flex-col max-w-4xl mx-auto h-screen relative">
       {/* Hidden audio element for TTS */}
       <audio ref={audioRef} className="hidden" />
 
       {/* Header with Stage indicators */}
-      <div className="bg-white p-4 shadow-sm flex items-center justify-between sticky top-0 z-10 border-b">
+      <div className="bg-white dark:bg-slate-900 p-3 md:p-4 shadow-sm flex items-center justify-between sticky top-0 z-10 border-b dark:border-slate-700">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-xl">👩‍🏫</div>
+          <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-blue-100 dark:bg-blue-950/50 flex items-center justify-center text-lg md:text-xl">👩‍🏫</div>
           <div>
-            <h2 className="font-bold text-slate-800">Cô giáo AI</h2>
+            <h2 className="text-sm md:text-base font-bold text-slate-800 dark:text-slate-100">Cô giáo AI</h2>
             <p className="text-xs text-blue-500 font-medium capitalize">
               Đang trong phòng thi (Giai đoạn {stage === "warmup" ? "1" : stage === "picture" ? "2" : stage === "reading" ? "3" : "4"})
             </p>
@@ -869,7 +869,7 @@ export default function InteractiveTest() {
         </div>
 
         {/* Cambridge Progress Bar */}
-        <div className="hidden sm:flex items-center gap-2 max-w-xs w-full bg-slate-100 rounded-full h-3 border border-slate-200 px-0.5 overflow-hidden">
+        <div className="flex items-center gap-2 max-w-xs w-full bg-slate-100 dark:bg-slate-800 rounded-full h-2.5 md:h-3 border border-slate-200 dark:border-slate-600 px-0.5 overflow-hidden">
           <div 
             className="bg-gradient-to-r from-blue-500 to-indigo-500 h-2 rounded-full transition-all duration-500"
             style={{ 
@@ -881,7 +881,7 @@ export default function InteractiveTest() {
           />
         </div>
 
-        <Link href="/" className="px-4 py-2 rounded-xl bg-slate-100 text-slate-600 font-bold text-sm hover:bg-slate-200">
+        <Link href="/" className="px-3 md:px-4 py-1.5 md:py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-bold text-xs md:text-sm hover:bg-slate-200 dark:hover:bg-slate-700">
           Thoát
         </Link>
       </div>
@@ -1043,12 +1043,12 @@ export default function InteractiveTest() {
       )}
 
       {/* Dynamic Chat Messages area */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+      <div className="flex-1 overflow-y-auto p-3 md:p-4 space-y-3 md:space-y-4">
         {messages.map((msg) => (
           <div key={msg.id} className={`flex ${msg.role === "ai" ? "justify-start" : "justify-end"}`}>
             <div className={`max-w-[80%] p-4 rounded-2xl shadow-sm ${
               msg.role === "ai" 
-                ? "bg-white border-2 border-blue-100 text-slate-800 rounded-tl-sm" 
+                ? "bg-white dark:bg-slate-800 border-2 border-blue-100 dark:border-slate-600 text-slate-800 dark:text-slate-100 rounded-tl-sm" 
                 : "bg-blue-500 text-white rounded-tr-sm"
             }`}>
               <p className="font-medium">{msg.content}</p>
@@ -1058,7 +1058,7 @@ export default function InteractiveTest() {
         
         {isProcessing && (
           <div className="flex justify-start">
-            <div className="bg-white border-2 border-blue-100 p-4 rounded-2xl rounded-tl-sm shadow-sm flex items-center gap-2 text-slate-500">
+            <div className="bg-white dark:bg-slate-800 border-2 border-blue-100 dark:border-slate-600 p-3 md:p-4 rounded-2xl rounded-tl-sm shadow-sm flex items-center gap-2 text-slate-500 dark:text-slate-400">
               <Loader2 className="w-4 h-4 animate-spin text-blue-500" />
               <span className="font-medium text-sm">Cô giáo đang nghe...</span>
             </div>
@@ -1068,7 +1068,7 @@ export default function InteractiveTest() {
       </div>
 
       {/* Microphone recording input triggers */}
-      <div className="p-4 bg-white border-t sticky bottom-0">
+      <div className="p-3 md:p-4 bg-white dark:bg-slate-900 border-t dark:border-slate-700 sticky bottom-0">
         <div className="flex items-center justify-center gap-4">
           {!isRecording ? (
             <button 
@@ -1089,7 +1089,7 @@ export default function InteractiveTest() {
             </button>
           )}
         </div>
-        <p className="text-center text-xs text-slate-400 mt-3 font-medium select-none">
+        <p className="text-center text-[10px] md:text-xs text-slate-400 dark:text-slate-500 mt-2 md:mt-3 font-medium select-none">
           {stage === "writing" 
             ? "Con gõ từ vào ô nhập liệu ở trên rồi bấm Nộp bài nhé" 
             : showMcq 

@@ -200,11 +200,11 @@ export default function AdaptiveTestPage() {
   // UI Renders
   if (testState === "start") {
     return (
-      <div className="w-full min-h-screen bg-pastel-bg flex flex-col items-center justify-center p-6 text-center">
-        <div className="bg-white rounded-3xl border-4 border-amber-300 p-8 shadow-2xl max-w-lg w-full relative">
+      <div className="w-full min-h-screen bg-pastel-bg dark:bg-dark-bg flex flex-col items-center justify-center p-4 md:p-6 text-center">
+        <div className="bg-white dark:bg-slate-900 rounded-3xl border-4 border-amber-300 dark:border-amber-800 p-5 md:p-8 shadow-2xl max-w-lg w-full relative">
           <div className="text-6xl mb-4 animate-bounce">🚀</div>
-          <h1 className="text-3xl font-black text-slate-800 mb-2">Đánh Giá Năng Lực AI</h1>
-          <p className="text-slate-600 font-bold mb-8">
+          <h1 className="text-2xl md:text-3xl font-black text-slate-800 dark:text-slate-100 mb-2">Đánh Giá Năng Lực AI</h1>
+          <p className="text-slate-600 dark:text-slate-300 font-bold mb-6 md:mb-8 text-sm md:text-base">
             Bài kiểm tra thích ứng thông minh. Cô giáo AI sẽ điều chỉnh độ khó của câu hỏi tùy theo câu trả lời của con!
           </p>
           <button 
@@ -221,45 +221,45 @@ export default function AdaptiveTestPage() {
 
   if (testState === "completed" && finalResult) {
     return (
-      <div className="w-full min-h-screen bg-pastel-bg py-10 px-4 flex flex-col items-center">
-        <div className="bg-white rounded-3xl border-4 border-amber-300 p-8 shadow-2xl max-w-2xl w-full text-center relative overflow-hidden">
+      <div className="w-full min-h-screen bg-pastel-bg dark:bg-dark-bg py-8 md:py-10 px-3 md:px-4 flex flex-col items-center">
+        <div className="bg-white dark:bg-slate-900 rounded-3xl border-4 border-amber-300 dark:border-amber-800 p-5 md:p-8 shadow-2xl max-w-2xl w-full text-center relative overflow-hidden">
           <div className="absolute -top-4 -left-4 text-4xl animate-spin" style={{animationDuration:'6s'}}>⭐</div>
           <div className="absolute -top-4 -right-4 text-4xl animate-bounce">🎈</div>
           
-          <h2 className="text-3xl font-black text-slate-800 mb-2">KẾT QUẢ ĐÁNH GIÁ</h2>
-          <p className="text-sm font-bold text-slate-500 mb-6 uppercase tracking-widest">Hoàn thành bài kiểm tra CAT</p>
+          <h2 className="text-2xl md:text-3xl font-black text-slate-800 dark:text-slate-100 mb-2">KẾT QUẢ ĐÁNH GIÁ</h2>
+          <p className="text-xs md:text-sm font-bold text-slate-500 dark:text-slate-400 mb-4 md:mb-6 uppercase tracking-widest">Hoàn thành bài kiểm tra CAT</p>
 
-          <div className="bg-amber-50 border-2 border-amber-200 rounded-3xl p-6 mb-8 flex flex-col items-center">
-            <span className="text-xs font-black text-amber-700 uppercase mb-2">Trình Độ Khuyến Nghị</span>
+          <div className="bg-amber-50 dark:bg-amber-950/40 border-2 border-amber-200 dark:border-amber-800 rounded-3xl p-4 md:p-6 mb-6 md:mb-8 flex flex-col items-center">
+            <span className="text-xs font-black text-amber-700 dark:text-amber-400 uppercase mb-2">Trình Độ Khuyến Nghị</span>
             <div className="text-5xl mb-2">
               {finalResult.finalLevel === "Starters" ? "🦛" : finalResult.finalLevel === "Movers" ? "🐒" : "🦁"}
             </div>
-            <h3 className="text-4xl font-black text-amber-600 tracking-tight">{finalResult.finalLevel}</h3>
+            <h3 className="text-3xl md:text-4xl font-black text-amber-600 dark:text-amber-400 tracking-tight">{finalResult.finalLevel}</h3>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
-            <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-3">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 md:gap-4 mb-6 md:mb-8">
+            <div className="bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 rounded-2xl p-3">
               <div className="text-xs font-black text-emerald-600 mb-1 uppercase">Từ Vựng</div>
               <div className="text-2xl font-black text-emerald-700">{finalResult.finalScores.vocabulary}</div>
             </div>
-            <div className="bg-blue-50 border border-blue-200 rounded-2xl p-3">
+            <div className="bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800 rounded-2xl p-3">
               <div className="text-xs font-black text-blue-600 mb-1 uppercase">Ngữ Pháp</div>
               <div className="text-2xl font-black text-blue-700">{finalResult.finalScores.grammar}</div>
             </div>
-            <div className="bg-pink-50 border border-pink-200 rounded-2xl p-3">
+            <div className="bg-pink-50 dark:bg-pink-950/40 border border-pink-200 dark:border-pink-800 rounded-2xl p-3">
               <div className="text-xs font-black text-pink-600 mb-1 uppercase">Phát Âm</div>
               <div className="text-2xl font-black text-pink-700">{finalResult.finalScores.pronunciation}</div>
             </div>
-            <div className="bg-purple-50 border border-purple-200 rounded-2xl p-3">
+            <div className="bg-purple-50 dark:bg-purple-950/40 border border-purple-200 dark:border-purple-800 rounded-2xl p-3">
               <div className="text-xs font-black text-purple-600 mb-1 uppercase">Nghe Hiểu</div>
               <div className="text-2xl font-black text-purple-700">{finalResult.finalScores.fluency}</div>
             </div>
           </div>
 
-          <div className="bg-slate-50 border-2 border-slate-200 rounded-2xl p-5 text-left mb-8 shadow-inner relative">
+          <div className="bg-slate-50 dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-600 rounded-2xl p-4 md:p-5 text-left mb-6 md:mb-8 shadow-inner relative">
             <Compass className="absolute top-4 right-4 w-8 h-8 text-slate-300 animate-spin" style={{animationDuration: '10s'}}/>
-            <h4 className="font-black text-slate-700 mb-2">👩‍🏫 Nhận Xét Của Cô Giáo AI:</h4>
-            <p className="text-slate-600 font-bold leading-relaxed">{finalResult.aiRecommendation}</p>
+            <h4 className="font-black text-slate-700 dark:text-slate-200 mb-2">👩‍🏫 Nhận Xét Của Cô Giáo AI:</h4>
+            <p className="text-slate-600 dark:text-slate-300 font-bold leading-relaxed text-sm">{finalResult.aiRecommendation}</p>
           </div>
 
           <Link href="/">
@@ -276,29 +276,29 @@ export default function AdaptiveTestPage() {
   if (!currentQuestion) return null;
 
   return (
-    <div className="w-full min-h-screen bg-pastel-bg pb-20">
-      <header className="w-full bg-white border-b-4 border-slate-100 py-4 px-4 sticky top-0 z-30 shadow-sm flex items-center justify-between">
+    <div className="w-full min-h-screen bg-pastel-bg dark:bg-dark-bg pb-20">
+      <header className="w-full bg-white dark:bg-slate-900 border-b-4 border-slate-100 dark:border-slate-700 py-3 md:py-4 px-3 md:px-4 sticky top-0 z-30 shadow-sm flex items-center justify-between gap-2">
         <Link href="/">
-          <button className="btn-3d-gray px-3 py-2 text-xs font-black flex items-center gap-1">
-            <ArrowLeft className="w-4 h-4" /> THOÁT
+          <button className="btn-3d-gray px-2.5 md:px-3 py-1.5 md:py-2 text-[10px] md:text-xs font-black flex items-center gap-1">
+            <ArrowLeft className="w-3.5 h-3.5 md:w-4 md:h-4" /> <span className="hidden sm:inline">THOÁT</span><span className="sm:hidden">VỀ</span>
           </button>
         </Link>
         <div className="flex items-center gap-2">
-          <span className="text-xs font-black text-slate-400 uppercase tracking-widest block text-center">Câu hỏi</span>
-          <span className="bg-amber-100 text-amber-700 font-black px-3 py-1 rounded-xl border border-amber-300">
+          <span className="text-[10px] md:text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest block text-center">Câu hỏi</span>
+          <span className="bg-amber-100 dark:bg-amber-950/50 text-amber-700 dark:text-amber-300 font-black px-2.5 md:px-3 py-1 rounded-xl border border-amber-300 dark:border-amber-700 text-sm">
             #{questionCount}
           </span>
         </div>
-        <div className="flex items-center gap-1 bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-xl text-xs font-black text-slate-600 uppercase">
-          Level: <span className="text-blue-500">{currentLevel}</span>
+        <div className="flex items-center gap-1 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-600 px-2 md:px-3 py-1 md:py-1.5 rounded-xl text-[10px] md:text-xs font-black text-slate-600 dark:text-slate-300 uppercase">
+          Level: <span className="text-blue-500 dark:text-blue-400">{currentLevel}</span>
         </div>
       </header>
 
-      <main className="max-w-2xl mx-auto px-4 mt-8 flex flex-col justify-center">
-        <section className="bg-white rounded-3xl border-4 border-slate-100 p-6 shadow-xl mb-6 relative overflow-hidden">
+      <main className="max-w-2xl mx-auto px-3 md:px-4 mt-6 md:mt-8 flex flex-col justify-center">
+        <section className="bg-white dark:bg-slate-900 rounded-3xl border-4 border-slate-100 dark:border-slate-700 p-4 md:p-6 shadow-xl mb-6 relative overflow-hidden">
           {/* Header Title with Mascot */}
           <div className="flex items-center gap-3 mb-6 border-b border-slate-100 pb-4">
-            <div className="w-12 h-12 rounded-xl bg-amber-50 border-2 border-amber-200 flex items-center justify-center text-2xl shadow-sm shrink-0">
+            <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-amber-50 dark:bg-amber-950/40 border-2 border-amber-200 dark:border-amber-800 flex items-center justify-center text-xl md:text-2xl shadow-sm shrink-0">
               {currentQuestion.level === "Starters" ? "🦛" : currentQuestion.level === "Movers" ? "🐒" : "🦁"}
             </div>
             <div>
@@ -313,7 +313,7 @@ export default function AdaptiveTestPage() {
             </div>
           </div>
 
-          <div className="w-full bg-slate-50 border-2 border-dashed border-slate-200 rounded-2xl py-6 px-4 text-center mb-6 relative flex flex-col items-center justify-center">
+          <div className="w-full bg-slate-50 dark:bg-slate-800 border-2 border-dashed border-slate-200 dark:border-slate-600 rounded-2xl py-4 md:py-6 px-3 md:px-4 text-center mb-4 md:mb-6 relative flex flex-col items-center justify-center">
             <span className="text-6xl tracking-widest block mb-3">{currentQuestion.illustration}</span>
             <span className="text-xs font-black text-slate-400 bg-white border border-slate-100 px-3 py-1 rounded-full shadow-sm max-w-xs uppercase tracking-wide">
               🎨 {currentQuestion.illustrationDesc}
@@ -477,10 +477,10 @@ export default function AdaptiveTestPage() {
 
       {/* Loading overlay for transitions */}
       {isProcessing && testState === "running" && (
-        <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center">
-          <div className="bg-white rounded-3xl p-6 shadow-2xl flex flex-col items-center">
+        <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 shadow-2xl flex flex-col items-center">
             <RefreshCw className="w-10 h-10 text-blue-500 animate-spin mb-3" />
-            <p className="font-black text-slate-700">Đang phân tích...</p>
+            <p className="font-black text-slate-700 dark:text-slate-200">Đang phân tích...</p>
           </div>
         </div>
       )}

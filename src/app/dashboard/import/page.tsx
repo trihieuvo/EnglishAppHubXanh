@@ -391,13 +391,13 @@ export default function CambridgeImportPage() {
   };
 
   return (
-    <div className="w-full min-h-screen pb-20 relative bg-pastel-bg flex flex-col font-sans">
+    <div className="w-full min-h-screen pb-20 relative bg-pastel-bg dark:bg-dark-bg flex flex-col font-sans">
       {/* Decorative Bubble Backgrounds */}
       <div className="bubble-bg top-24 left-10 w-24 h-24 animate-float" style={{ animationDelay: "1s" }} />
       <div className="bubble-bg bottom-16 right-16 w-28 h-28 animate-float" style={{ animationDelay: "3s" }} />
 
       {/* Navigation Header */}
-      <header className="w-full bg-white border-b-4 border-slate-100 py-4 px-4 sticky top-0 z-30 shadow-sm">
+      <header className="w-full bg-white dark:bg-slate-900 border-b-4 border-slate-100 dark:border-slate-700 py-3 md:py-4 px-3 md:px-4 sticky top-0 z-30 shadow-sm">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <Link href="/dashboard">
             <button className="btn-3d-gray px-4 py-2.5 text-xs font-black flex items-center gap-1">
@@ -406,19 +406,19 @@ export default function CambridgeImportPage() {
             </button>
           </Link>
 
-          <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 px-4 py-1.5 rounded-2xl shadow-inner">
+          <div className="flex items-center gap-1.5 md:gap-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-600 px-3 md:px-4 py-1 md:py-1.5 rounded-2xl shadow-inner">
             <Layers className="w-5 h-5 text-indigo-500" />
-            <span className="text-xs font-black text-slate-700 uppercase tracking-wider">Cambridge Digitalizer</span>
+            <span className="text-[10px] md:text-xs font-black text-slate-700 dark:text-slate-200 uppercase tracking-wider">Cambridge Digitalizer</span>
           </div>
 
-          <div className="w-10 h-10 rounded-full bg-indigo-50 flex items-center justify-center border-2 border-indigo-200">
+          <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-indigo-50 dark:bg-indigo-950/50 flex items-center justify-center border-2 border-indigo-200 dark:border-indigo-700">
             <span className="text-lg">☁️</span>
           </div>
         </div>
       </header>
 
       {/* Main Workspace content */}
-      <main className="max-w-6xl w-full mx-auto px-4 mt-8 flex flex-col gap-8 flex-1">
+      <main className="max-w-6xl w-full mx-auto px-3 md:px-4 mt-6 md:mt-8 flex flex-col gap-6 md:gap-8 flex-1">
         
         {/* Banner Alert Toast */}
         {toast && (
@@ -447,7 +447,7 @@ export default function CambridgeImportPage() {
         )}
 
         {/* Title block */}
-        <div className="text-center md:text-left bg-gradient-to-r from-indigo-50 to-purple-50 border-4 border-indigo-100 rounded-3xl p-6 shadow-sm flex flex-col md:flex-row items-center gap-6">
+        <div className="text-center md:text-left bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-950/40 dark:to-purple-950/40 border-4 border-indigo-100 dark:border-indigo-900 rounded-3xl p-4 md:p-6 shadow-sm flex flex-col md:flex-row items-center gap-4 md:gap-6">
           <div className="w-20 h-20 bg-indigo-500 rounded-2xl flex items-center justify-center text-5xl shadow-md text-white animate-pulse">
             📚
           </div>
@@ -455,7 +455,7 @@ export default function CambridgeImportPage() {
             <span className="bg-indigo-100 text-indigo-700 text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-md inline-block">
               Hệ thống nhập học liệu Số hóa PDF
             </span>
-            <h1 className="text-3xl font-black text-slate-800 tracking-tight mt-1">
+            <h1 className="text-2xl md:text-3xl font-black text-slate-800 dark:text-slate-100 tracking-tight mt-1">
               Cambridge YLE Learning Bank Digitalizer
             </h1>
             <p className="text-xs font-bold text-slate-500 mt-1 leading-relaxed">
@@ -468,7 +468,7 @@ export default function CambridgeImportPage() {
         <section className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           
           {/* LEFT: Import Form (8 cols on large) */}
-          <div className="bg-white rounded-3xl border-4 border-slate-100 p-6 md:p-8 shadow-xl lg:col-span-8 flex flex-col gap-6">
+          <div className="bg-white dark:bg-slate-900 rounded-3xl border-4 border-slate-100 dark:border-slate-700 p-4 md:p-6 md:p-8 shadow-xl lg:col-span-8 flex flex-col gap-4 md:gap-6">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-3">
               <h3 className="text-xl font-black text-slate-800 flex items-center gap-2">
                 <PenTool className="w-6 h-6 text-indigo-500" />
@@ -746,7 +746,7 @@ export default function CambridgeImportPage() {
           <div className="lg:col-span-4 flex flex-col gap-6">
             
             {/* Image Preview Box */}
-            <div className="bg-white rounded-3xl border-4 border-slate-100 p-6 shadow-xl relative overflow-hidden">
+            <div className="bg-white dark:bg-slate-900 rounded-3xl border-4 border-slate-100 dark:border-slate-700 p-4 md:p-6 shadow-xl relative overflow-hidden">
               <h4 className="text-sm font-black text-slate-800 uppercase tracking-wider mb-4 flex items-center gap-1.5">
                 <ImageIcon className="w-4.5 h-4.5 text-indigo-500" />
                 Học liệu gốc (Ảnh / PDF)
@@ -855,7 +855,7 @@ export default function CambridgeImportPage() {
             </div>
 
             {/* Quick PDF Extraction Instruction Guidelines */}
-            <div className="bg-white rounded-3xl border-4 border-slate-100 p-6 shadow-xl">
+            <div className="bg-white dark:bg-slate-900 rounded-3xl border-4 border-slate-100 dark:border-slate-700 p-4 md:p-6 shadow-xl">
               <h4 className="text-sm font-black text-slate-800 uppercase tracking-wider mb-3.5 flex items-center gap-1.5">
                 <HelpCircle className="w-4.5 h-4.5 text-amber-500" />
                 Hướng dẫn cắt bóc tách từ PDF
@@ -882,10 +882,10 @@ export default function CambridgeImportPage() {
         </section>
 
         {/* Live Question Bank Data Table */}
-        <section className="bg-white rounded-3xl border-4 border-slate-100 p-6 md:p-8 shadow-xl mb-12">
+        <section className="bg-white dark:bg-slate-900 rounded-3xl border-4 border-slate-100 dark:border-slate-700 p-4 md:p-6 md:p-8 shadow-xl mb-12">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 border-b border-slate-100 pb-5 mb-6">
             <div>
-              <h3 className="text-xl font-black text-slate-800 flex items-center gap-2">
+              <h3 className="text-lg md:text-xl font-black text-slate-800 dark:text-slate-100 flex items-center gap-2">
                 <Database className="w-6 h-6 text-indigo-500" />
                 Ngân hàng Học liệu đã Số hóa ({filteredQuestions.length})
               </h3>
@@ -893,7 +893,7 @@ export default function CambridgeImportPage() {
             </div>
 
             {/* Filter Tabs by Level */}
-            <div className="flex items-center gap-1.5 bg-slate-50 border-2 border-slate-200/70 p-1.5 rounded-2xl shrink-0">
+            <div className="flex items-center gap-1.5 bg-slate-50 dark:bg-slate-800 border-2 border-slate-200/70 dark:border-slate-600 p-1.5 rounded-2xl shrink-0 flex-wrap">
               {["All", "Starters", "Movers", "Flyers"].map((tab) => {
                 const isActive = selectedFilter === tab;
                 return (

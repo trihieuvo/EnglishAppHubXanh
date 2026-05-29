@@ -287,13 +287,13 @@ function TestPageContent({ rawLevel }: { rawLevel: string }) {
   const loadingDetails = getLoadingMessage();
 
   return (
-    <div className="w-full min-h-screen pb-16 relative bg-pastel-bg flex flex-col">
+    <div className="w-full min-h-screen pb-16 relative bg-pastel-bg dark:bg-dark-bg flex flex-col">
       {/* Visual background bubbles decor */}
       <div className="bubble-bg top-24 left-6 w-20 h-20 animate-float" style={{ animationDelay: "1s" }} />
       <div className="bubble-bg bottom-16 right-10 w-28 h-28 animate-float" style={{ animationDelay: "2s" }} />
 
       {/* Navigation bar */}
-      <header className="w-full bg-white border-b-4 border-slate-100 py-4 px-4 sticky top-0 z-30 shadow-sm">
+      <header className="w-full bg-white dark:bg-slate-900 border-b-4 border-slate-100 dark:border-slate-700 py-3 md:py-4 px-3 md:px-4 sticky top-0 z-30 shadow-sm">
         <div className="max-w-4xl mx-auto flex items-center justify-between">
           {isProcessing ? (
             <button disabled className="btn-3d-gray opacity-60 px-4 py-2.5 text-xs font-black flex items-center gap-1 cursor-not-allowed">
@@ -309,9 +309,9 @@ function TestPageContent({ rawLevel }: { rawLevel: string }) {
             </Link>
           )}
 
-          <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 px-4 py-1.5 rounded-2xl">
-            <span className="text-xl">{currentDetails.animal}</span>
-            <span className="text-xs font-black text-slate-700 uppercase tracking-wider">
+          <div className="flex items-center gap-1.5 md:gap-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-600 px-2.5 md:px-4 py-1 md:py-1.5 rounded-2xl">
+            <span className="text-base md:text-xl">{currentDetails.animal}</span>
+            <span className="text-[9px] md:text-xs font-black text-slate-700 dark:text-slate-200 uppercase tracking-wider">
               {level} LEVEL - {skill.toUpperCase()}
             </span>
           </div>
@@ -323,10 +323,10 @@ function TestPageContent({ rawLevel }: { rawLevel: string }) {
       </header>
 
       {/* Main Workspace content */}
-      <main className="flex-1 max-w-2xl w-full mx-auto px-4 mt-8 flex flex-col justify-center">
+      <main className="flex-1 max-w-2xl w-full mx-auto px-3 md:px-4 mt-6 md:mt-8 flex flex-col justify-center">
 
         {/* Mascot Prompt card */}
-        <section className="bg-white rounded-3xl border-4 border-slate-100 p-6 md:p-8 shadow-xl mb-6 relative overflow-hidden">
+        <section className="bg-white dark:bg-slate-900 rounded-3xl border-4 border-slate-100 dark:border-slate-700 p-4 md:p-8 shadow-xl mb-6 relative overflow-hidden">
           
           {/* Header Title with Mascot */}
           <div className="flex items-center gap-4 mb-6 border-b border-slate-100 pb-4">
@@ -661,7 +661,7 @@ function TestPageContent({ rawLevel }: { rawLevel: string }) {
 
       {/* 🚀 Playful Fullscreen Loading Overlay for Kid-friendly AI Grading */}
       {isProcessing && (
-        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-50 flex flex-col items-center justify-center p-6 text-center">
+        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-50 flex flex-col items-center justify-center p-4 md:p-6 text-center">
           <div className="bg-white rounded-3xl border-4 border-indigo-400 p-8 shadow-2xl max-w-sm w-full relative overflow-hidden animate-bounce-subtle">
             
             {/* Playful elements floating around inside loading box */}

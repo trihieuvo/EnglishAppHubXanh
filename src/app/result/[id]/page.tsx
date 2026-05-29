@@ -248,57 +248,58 @@ export default function ResultPage({ params }: ResultPageProps) {
   const progressPercent = Math.round((completedCount / 3) * 100);
 
   return (
-    <div className="w-full min-h-screen pb-20 relative bg-pastel-bg">
+    <div className="w-full min-h-screen pb-20 relative bg-pastel-bg dark:bg-dark-bg">
       {/* Dynamic bubbles background */}
       <div className="bubble-bg top-12 left-8 w-24 h-24 animate-float" style={{ animationDelay: "0s" }} />
       <div className="bubble-bg top-32 right-12 w-28 h-28 animate-float" style={{ animationDelay: "3s" }} />
       <div className="bubble-bg bottom-16 left-16 w-32 h-32 animate-float" style={{ animationDelay: "6s" }} />
 
       {/* Header bar */}
-      <header className="w-full bg-white border-b-4 border-slate-100 py-4 px-4 sticky top-0 z-30 shadow-sm">
-        <div className="max-w-4xl mx-auto flex items-center justify-between">
+      <header className="w-full bg-white dark:bg-slate-900 border-b-4 border-slate-100 dark:border-slate-700 py-3 md:py-4 px-3 md:px-4 sticky top-0 z-30 shadow-sm">
+        <div className="max-w-4xl mx-auto flex items-center justify-between gap-2">
           <Link href="/">
-            <button className="btn-3d-gray px-4 py-2.5 text-xs font-black flex items-center gap-1">
-              <ArrowLeft className="w-4 h-4" />
-              BẢNG CHỌN BÀI
+            <button className="btn-3d-gray px-2.5 md:px-4 py-2 md:py-2.5 text-[10px] md:text-xs font-black flex items-center gap-1">
+              <ArrowLeft className="w-3.5 h-3.5 md:w-4 md:h-4" />
+              <span className="hidden sm:inline">BẢNG CHỌN BÀI</span>
+              <span className="sm:hidden">VỀ</span>
             </button>
           </Link>
           
-          <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 px-4 py-1.5 rounded-2xl">
-            <span className="text-xl">
+          <div className="flex items-center gap-1.5 md:gap-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-600 px-2.5 md:px-4 py-1 md:py-1.5 rounded-2xl">
+            <span className="text-base md:text-xl">
               {skill === "Speaking" && "🎤"}
               {skill === "Listening" && "🎧"}
               {skill === "Reading" && "📖"}
               {skill === "Writing" && "✍️"}
             </span>
-            <span className="text-sm font-black text-slate-700 uppercase tracking-wider">
-              KẾT QUẢ LUYỆN {skill === "Speaking" ? "NÓI" : skill === "Listening" ? "NGHE" : skill === "Reading" ? "ĐỌC" : "VIẾT"}
+            <span className="text-[10px] md:text-sm font-black text-slate-700 dark:text-slate-200 uppercase tracking-wider">
+              KẾT QUẢ {skill === "Speaking" ? "NÓI" : skill === "Listening" ? "NGHE" : skill === "Reading" ? "ĐỌC" : "VIẾT"}
             </span>
           </div>
 
-          <div className="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center border-2 border-emerald-300">
-            <span className="text-lg animate-bounce" style={{ animationDuration: "1.5s" }}>🎉</span>
+          <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-emerald-100 dark:bg-emerald-950/50 flex items-center justify-center border-2 border-emerald-300 dark:border-emerald-700">
+            <span className="text-sm md:text-lg animate-bounce" style={{ animationDuration: "1.5s" }}>🎉</span>
           </div>
         </div>
       </header>
 
       {/* Content wrapper */}
-      <main className="max-w-3xl w-full mx-auto px-4 mt-8 flex flex-col gap-8">
+      <main className="max-w-3xl w-full mx-auto px-3 md:px-4 mt-6 md:mt-8 flex flex-col gap-6 md:gap-8">
         
         {/* 1. Scoreboard and Stars Showcase Card */}
-        <section className="bg-white rounded-3xl border-4 border-amber-200 p-8 shadow-xl text-center relative overflow-hidden">
+        <section className="bg-white dark:bg-slate-900 rounded-3xl border-4 border-amber-200 dark:border-amber-900 p-5 md:p-8 shadow-xl text-center relative overflow-hidden">
           
           {/* Confetti floats */}
           <div className="absolute top-2 left-6 text-2xl animate-bounce" style={{ animationDelay: "1s" }}>✨</div>
           <div className="absolute top-8 right-8 text-2xl animate-bounce" style={{ animationDelay: "2.5s" }}>🎈</div>
           <div className="absolute bottom-6 left-10 text-xl animate-float">🎉</div>
           
-          <span className="bg-yellow-100 text-yellow-700 text-xs font-black uppercase tracking-wider px-4 py-1.5 rounded-full border border-yellow-300 inline-flex items-center gap-1.5 mb-4 shadow-sm">
-            <Sparkles className="w-3.5 h-3.5 fill-yellow-400" />
+          <span className="bg-yellow-100 dark:bg-yellow-950/50 text-yellow-700 dark:text-yellow-300 text-[10px] md:text-xs font-black uppercase tracking-wider px-3 md:px-4 py-1 md:py-1.5 rounded-full border border-yellow-300 dark:border-yellow-800 inline-flex items-center gap-1.5 mb-3 md:mb-4 shadow-sm">
+            <Sparkles className="w-3 h-3 md:w-3.5 md:h-3.5 fill-yellow-400" />
             Bé đạt thành tích cao chuẩn Cambridge!
           </span>
 
-          <h2 className="text-3xl font-black text-slate-800 tracking-tight mb-6">
+          <h2 className="text-2xl md:text-3xl font-black text-slate-800 dark:text-slate-100 tracking-tight mb-4 md:mb-6">
             BẢNG THÀNH TÍCH CỦA BÉ TÂM ANH
           </h2>
 
@@ -321,20 +322,20 @@ export default function ResultPage({ params }: ResultPageProps) {
           </div>
 
           {/* Scoring badge stats grid */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-md mx-auto mt-6">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 md:gap-4 max-w-md mx-auto mt-4 md:mt-6">
             
             {/* Score point badge */}
-            <div className="w-full bg-slate-50 border-2 border-slate-200 rounded-2xl p-4 shadow-inner">
-              <span className="text-xs font-black text-slate-400 uppercase tracking-widest block">
+            <div className="w-full bg-slate-50 dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-600 rounded-2xl p-3 md:p-4 shadow-inner">
+              <span className="text-[10px] md:text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest block">
                 {skill === "Writing" ? "ĐIỂM TẬP VIẾT" : skill === "Speaking" ? "ĐIỂM PHÁT ÂM" : "ĐIỂM TRẮC NGHIỆM"}
               </span>
-              <span className="text-4xl font-black text-emerald-500 font-mono block mt-1">
+              <span className="text-3xl md:text-4xl font-black text-emerald-500 font-mono block mt-1">
                 {data.score} <span className="text-base text-slate-400 font-sans">/ 100</span>
               </span>
             </div>
 
             {/* Medal achievement badge */}
-            <div className={`w-full border-2 rounded-2xl p-4 shadow-sm flex flex-col justify-center ${medalColor}`}>
+            <div className={`w-full border-2 rounded-2xl p-3 md:p-4 shadow-sm flex flex-col justify-center ${medalColor}`}>
               <span className="text-xs font-black opacity-60 uppercase tracking-widest block">HUY CHƯƠNG ĐẠT ĐƯỢC</span>
               <span className="text-xl font-black block mt-1.5 flex items-center justify-center gap-1">
                 <Award className="w-5 h-5 shrink-0 animate-spin" style={{ animationDuration: "12s" }} />
@@ -350,7 +351,7 @@ export default function ResultPage({ params }: ResultPageProps) {
 
         {/* A. SPEAKING FEEDBACK DETAIL */}
         {skill === "Speaking" && (
-          <section className="bg-white rounded-3xl border-4 border-slate-100 p-6 md:p-8 shadow-xl">
+          <section className="bg-white dark:bg-slate-900 rounded-3xl border-4 border-slate-100 dark:border-slate-700 p-4 md:p-8 shadow-xl">
             <div className="mb-4 text-center sm:text-left">
               <h3 className="text-lg font-black text-slate-800 flex items-center justify-center sm:justify-start gap-2">
                 <MessageSquare className="w-5 h-5 text-emerald-500 animate-pulse" />
@@ -413,7 +414,7 @@ export default function ResultPage({ params }: ResultPageProps) {
 
         {/* B. LISTENING & READING FEEDBACK DETAIL */}
         {(skill === "Listening" || skill === "Reading") && (
-          <section className="bg-white rounded-3xl border-4 border-slate-100 p-6 md:p-8 shadow-xl">
+          <section className="bg-white dark:bg-slate-900 rounded-3xl border-4 border-slate-100 dark:border-slate-700 p-4 md:p-8 shadow-xl">
             <h3 className="text-lg font-black text-slate-800 flex items-center gap-2 border-b border-slate-100 pb-3 mb-4">
               <CheckSquare className="w-5 h-5 text-blue-500" />
               Chi tiết câu trả lời trắc nghiệm:
@@ -477,7 +478,7 @@ export default function ResultPage({ params }: ResultPageProps) {
 
         {/* C. WRITING FEEDBACK DETAIL */}
         {skill === "Writing" && (
-          <section className="bg-white rounded-3xl border-4 border-slate-100 p-6 md:p-8 shadow-xl">
+          <section className="bg-white dark:bg-slate-900 rounded-3xl border-4 border-slate-100 dark:border-slate-700 p-4 md:p-8 shadow-xl">
             <h3 className="text-lg font-black text-slate-800 flex items-center gap-2 border-b border-slate-100 pb-3 mb-4">
               <PenTool className="w-5 h-5 text-amber-500" />
               Chi tiết câu tập viết của con:
@@ -522,16 +523,16 @@ export default function ResultPage({ params }: ResultPageProps) {
         )}
 
         {/* 3. AI Tutor Empathetic feedback bubble */}
-        <section className="bg-white rounded-3xl border-4 border-slate-100 p-6 md:p-8 shadow-xl relative overflow-hidden">
+        <section className="bg-white dark:bg-slate-900 rounded-3xl border-4 border-slate-100 dark:border-slate-700 p-4 md:p-8 shadow-xl relative overflow-hidden">
           
           <div className="flex flex-col sm:flex-row items-start gap-5">
             
             {/* Mascot Avatar column */}
-            <div className="shrink-0 flex sm:flex-col items-center gap-2 self-center sm:self-start bg-slate-50 border-2 border-slate-200/80 rounded-2xl p-4 w-full sm:w-28 text-center shadow-inner">
+            <div className="shrink-0 flex sm:flex-col items-center gap-2 self-center sm:self-start bg-slate-50 dark:bg-slate-800 border-2 border-slate-200/80 dark:border-slate-600 rounded-2xl p-3 md:p-4 w-full sm:w-28 text-center shadow-inner">
               <span className="text-5xl animate-bounce" style={{ animationDuration: "2s" }}>{levelMascotAnimal}</span>
               <div>
-                <p className="text-[11px] font-black text-slate-700 leading-tight">{levelMascotName}</p>
-                <p className="text-[9px] font-extrabold text-slate-400 mt-0.5">Cô giáo AI</p>
+                <p className="text-[11px] font-black text-slate-700 dark:text-slate-200 leading-tight">{levelMascotName}</p>
+                <p className="text-[9px] font-extrabold text-slate-400 dark:text-slate-500 mt-0.5">Cô giáo AI</p>
               </div>
             </div>
 
@@ -539,7 +540,7 @@ export default function ResultPage({ params }: ResultPageProps) {
             <div className="flex-1 w-full">
               
               {/* Encouragement text */}
-              <div className="relative bg-emerald-50 border-2 border-emerald-200 rounded-3xl p-5 shadow-sm">
+              <div className="relative bg-emerald-50 dark:bg-emerald-950/30 border-2 border-emerald-200 dark:border-emerald-800 rounded-3xl p-4 md:p-5 shadow-sm">
                 
                 {/* Arrow indicator absolute */}
                 <div className="hidden sm:block absolute left-0 top-8 w-4 h-4 bg-emerald-50 border-l-2 border-b-2 border-emerald-200 transform -translate-x-[9px] rotate-45" />
@@ -548,7 +549,7 @@ export default function ResultPage({ params }: ResultPageProps) {
                   ✍️ Lời khuyên ấm áp của cô giáo AI:
                 </h4>
                 
-                <p className="text-slate-700 text-sm font-extrabold leading-relaxed">
+                <p className="text-slate-700 dark:text-slate-200 text-xs md:text-sm font-extrabold leading-relaxed">
                   "{data.feedback.tutorComment}"
                 </p>
               </div>
@@ -573,9 +574,9 @@ export default function ResultPage({ params }: ResultPageProps) {
         </section>
 
         {/* 4. Playful learning roadmap Checklist */}
-        <section className="bg-white rounded-3xl border-4 border-slate-100 p-6 md:p-8 shadow-xl">
+        <section className="bg-white dark:bg-slate-900 rounded-3xl border-4 border-slate-100 dark:border-slate-700 p-4 md:p-8 shadow-xl">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b-2 border-slate-100">
-            <h3 className="text-xl font-black text-slate-800 flex items-center gap-2">
+            <h3 className="text-lg md:text-xl font-black text-slate-800 dark:text-slate-100 flex items-center gap-2">
               <Compass className="w-6 h-6 text-blue-500 animate-spin" style={{ animationDuration: "10s" }} />
               Lộ trình rèn luyện sửa lỗi cho bé 🚀
             </h3>
@@ -587,7 +588,7 @@ export default function ResultPage({ params }: ResultPageProps) {
             </div>
           </div>
 
-          <p className="text-xs text-slate-500 font-bold leading-relaxed mb-6">
+          <p className="text-xs text-slate-500 dark:text-slate-400 font-bold leading-relaxed mb-4 md:mb-6">
             Cô giáo AI đã soạn riêng cho con 3 bài tập nhỏ vui nhộn dưới đây. Bé hãy hoàn thành từng bài và nhấn tích chọn hộp bên trái để nhận thêm huy chương chăm chỉ nhé!
           </p>
 
